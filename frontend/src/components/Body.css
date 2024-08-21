@@ -1,25 +1,30 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Courier New', Courier, monospace;
 }
 main{
-    background-color: white;
+    background-color: #cffffd;
     height: 600px;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
 }
 .input_section{
     margin-top: 50px;
     height: 300px;
     width: 90%;
-    border: 2px solid black;
+    border: 2px solid #b1f3f3;
     border-radius: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     flex-direction: row;
+    background-color: #b1f3f3;
+    box-shadow: 1px 1px 7px black;
 }
 .Inputfield{
     width: 90%;
@@ -37,7 +42,7 @@ main{
 
 .startConversation {
     padding: 10px 20px;
-    background-color: #36b2b2; 
+    background-color: #15babf; 
     color: white; /* White text */
     border: none;
     cursor: pointer;
@@ -50,6 +55,34 @@ main{
   }
   
 .startConversation:hover {
-    background-color: #45a049; 
+    background-color: #adcc24; 
+}
+
+.output{
+    max-height: 50%;
+    height: 50%;
+    width: 90%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 1px 1px 7px black;
+    overflow-y: auto;  
+    padding: 10px;  
+}
+.advancedsearch{
+    height: 50px;
+    width: 300px;
+    background-color:#15babf ;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+.advancedsearchtext{
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+}
+.advancedsearch:hover {
+    background-color: #adcc24; 
 }
 
