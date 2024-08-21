@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import './Header.css' 
-import MenuIcon from '@mui/icons-material/Menu';
-import StarPurple500Icon from '@mui/icons-material/StarPurple500';
+import FlareIcon from '@mui/icons-material/Flare';
 function Header() {
     return (
       <>
         <div className="title">
-            <h1><StarPurple500Icon /></h1>
-            <h1>
+            
+            <h1 className='botname'>
+              <FlareIcon />
               Celestial Chatbot
             </h1>
             <div className="header_components">
@@ -15,7 +15,6 @@ function Header() {
                 <div className="link-container"><a href='#'>Stargazing</a></div>
                 <div className="link-container"><a href='#'>About</a></div>
             </div>
-            <button className="burger"><MenuIcon/></button>
         
         
         </div>
