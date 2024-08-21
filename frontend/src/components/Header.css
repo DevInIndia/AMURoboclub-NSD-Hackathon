@@ -5,32 +5,26 @@
 }
 
 .title{
-    width: 100VW;
+    width: 100vw;
     height: 50px;
-    background-color:black;
+    background-color:#292929;
     color: white;
     display: flex;
     justify-content: space-around;
     align-items: center;
     cursor: pointer;
 }
+.botname{
+    display: flex;
+    align-items: center;
+    color: goldenrod;
+}
 a{
     text-decoration: none;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color: aqua;
 }
-.burger{
-    color: aqua;
-    height: 30px;
-    width: 30px;
-    border:0.5px solid white;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius:5px ;
-    cursor: pointer;
-}
+
 .header_components{
     width: 50%;
     display: flex;
@@ -42,7 +36,7 @@ a{
 .link-container{
     height: 30px;
     width: 20%;
-    background-color: black;
+    background-color: #292929;
     border-radius: 5px;
     display: flex;
     justify-content: center;
