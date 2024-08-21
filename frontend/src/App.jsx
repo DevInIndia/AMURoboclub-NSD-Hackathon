@@ -1,14 +1,16 @@
-import { useState } from 'react'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Body from './components/Body'
-function App() {
+import React from 'react'
+import {Routes, Route} from "react-router-dom"
+import Home from './pages/Home'
+import AdvanceSearch from './pages/AdvanceSearch'
+
+const App = () => {
   return (
-    <>
-      <Header/>
-      <Body/>
-      <Footer/>
-    </>
+    <div>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/advance' element={<AdvanceSearch/>}/>
+      </Routes>
+    </div>
   )
 }
 
