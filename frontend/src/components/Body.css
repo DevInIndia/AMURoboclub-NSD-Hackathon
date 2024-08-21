@@ -1,0 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+main{
+    background-color: white;
+    height: 600px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.input_section{
+    margin-top: 50px;
+    height: 300px;
+    width: 90%;
+    border: 2px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.Inputfield{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+}
+.textInput {
+    padding: 10px;
+    width: 35vw;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.startConversation {
+    padding: 10px 20px;
+    background-color: #36b2b2; 
+    color: white; /* White text */
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+.startConversation:hover {
+    background-color: #45a049; 
+}
+
