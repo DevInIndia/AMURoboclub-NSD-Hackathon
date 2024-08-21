@@ -7,6 +7,9 @@ function Body() {
   const [isOutputVisible, setIsOutputVisible] = useState(false);
   const [currVal, setCurrVal] = useState("");
   let [searchedContent, setSearchedContent] = useState("Something like that");
+  const [inputSectionHeight, setInputSectionHeight] = useState('200px'); // Initial height
+
+  
 
   const userInput = (e) => {
     setCurrVal(e.target.value);
@@ -15,6 +18,7 @@ function Body() {
   const handleClick = (e) => {
     e.preventDefault();
     setIsOutputVisible(true);
+    setInputSectionHeight('400px'); // Change the height to 400px
 
     // axios.get("http://localhost:8080/search")
     // .then((res) => {
@@ -40,7 +44,7 @@ function Body() {
   return (
     <>
       <main>
-        <div className="input_section">
+        <div className="input_section" style={{ height: inputSectionHeight }}> {/* Apply dynamic height */}
           <form className='Inputfield' action="http://localhost:8080/search"> 
             <input type='text' name={currVal} onChange={userInput} value={currVal} placeholder='e.g. when is the next meteor shower?' className='textInput' />
             <button className='startConversation' onClick={handleClick}>
