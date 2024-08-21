@@ -9,4 +9,4 @@
 * Backend is built with the Node.js and ExpressJS. It contains the basic routes of handling the data between the client and the server. 
 * Gemini AI is used for make the searches related with space and provide that information to the frontend which will display on the screen.
 * Making the connection between Frontend and the Backend using cors and axios packages.
-* Handling all types of Errors
+* Handling Errors including Synchronous as well as Asynchronous. 

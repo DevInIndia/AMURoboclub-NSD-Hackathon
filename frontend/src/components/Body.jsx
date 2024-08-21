@@ -16,18 +16,18 @@ function Body() {
     e.preventDefault();
     setIsOutputVisible(true);
 
-    axios.post("http://localhost:8080/search", {name: currVal})
-    .then((res) => {
-      setSearchedContent(res.data);
-    })
+    axios.post("http://localhost:8080/search", { name: currVal })
+      .then((res) => {
+        setSearchedContent(res.data);
+      })
   };
 
   return (
     <>
       <main>
         <div className="input_section">
-          <form className='Inputfield' action="http://localhost:8080/search" method="POST"> 
-            <input type='text' name={currVal} onChange={userInput} value={currVal} placeholder='e.g. when is space technology?' className='textInput' />
+          <form className='Inputfield' action="http://localhost:8080/search" method="POST">
+            <input type='text' name={currVal} onChange={userInput} value={currVal} placeholder='e.g. What is Space Station?' className='textInput' />
             <button className='startConversation' onClick={handleClick}>
               <BiotechIcon />
               Start Conversation
