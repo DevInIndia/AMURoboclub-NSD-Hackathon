@@ -52,7 +52,7 @@ function Body() {
             {searchedContent || "This is the output that was hidden."}
           </div>
         </div>
-        <a href='#' className="advancedsearch">
+        <a href='/advance' className="advancedsearch">
           <div className='advancedsearchtext'>Advanced Search</div>
         </a>
       </main>
