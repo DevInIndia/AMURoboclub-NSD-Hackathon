@@ -14,7 +14,7 @@ main{
 }
 .input_section{
     margin-top: 50px;
-    height: 300px;
+    height: 200px;
     width: 90%;
     border: 2px solid #b1f3f3;
     border-radius: 10px;
@@ -52,16 +52,16 @@ main{
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-  }
+}
   
 .startConversation:hover {
     background-color: #adcc24; 
 }
 
 .output{
-    max-height: 50%;
-    height: 50%;
-    width: 90%;
+    max-height: 70%;
+    height: 70%;
+    width: 95%;
     background-color: white;
     border-radius: 10px;
     box-shadow: 1px 1px 7px black;
