@@ -27,7 +27,7 @@ function Body() {
       <main>
         <div className="input_section">
           <form className='Inputfield' action="http://localhost:8080/search" method="POST"> 
-            <input type='text' name={currVal} onChange={userInput} value={currVal} placeholder='e.g. when is the next meteor shower?' className='textInput' />
+            <input type='text' name={currVal} onChange={userInput} value={currVal} placeholder='e.g. when is space technology?' className='textInput' />
             <button className='startConversation' onClick={handleClick}>
               <BiotechIcon />
               Start Conversation

@@ -1,3 +1,7 @@
-1- Austin Varshney 
-2- Bhomik Varshney
-3- Shashank Chauhan
+## Team Name
+Code Clusters
+
+### Team Members
+* Austin Varshney 
+* Bhomik Varshney
+* Shashank Chauhan
