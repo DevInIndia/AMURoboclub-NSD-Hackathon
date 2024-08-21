@@ -1,16 +1,18 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
-footer{
+
+footer {
     background-color: black;
     height: 7vh;
     width: 100vw;
     display: flex;
     justify-content: center;
-    align-items:first baseline;
-    
+    align-items: first baseline;
+
 }
-.copyright{
+
+.copyright {
     color: aliceblue;
 }
