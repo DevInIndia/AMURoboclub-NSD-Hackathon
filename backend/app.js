@@ -2,8 +2,9 @@ require('dotenv').config();
 
 const express = require("express");
 const app = express();
-const axios = require('axios');
 const cors = require('cors');
+const ExpressError = require("./utils/ExpressError.js");
+const wrapAsync = require("./utils/wrapAsync.js");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 app.use(express.urlencoded({ extended: true }));
@@ -38,30 +39,29 @@ app.get("/", (req, res) => {
     res.send("Working");
 })
 
-app.post('/api/checkExoPlanet', async (req, res) => {
-    const fluxData = {
-        flux1: req.body.flux1,
-        flux2: req.body.flux2,
-        flux3: req.body.flux3,
-        flux4: req.body.flux4,
-        flux5: req.body.flux5
-    };
+app.post('/api/advanced-search', wrapAsync((req, res) => {
+    const {temp, lumin, magni, color, spect, radii} = req.body;
 
-    try {
-        const response = await axios.post('http://localhost:5000/predict', fluxData);
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('Error communicating with AI/ML server');
-    }
-});
+    const query = {Temperature: temp, Relative_Luminosity: lumin, Absolute_Magnitude: magni, Color: color, Spectral_Class: spect,Relative_Radius: radii};
+    res.json(query);
+}));
 
-app.post('/search', async (req, res) => {
+app.post('/search', wrapAsync(async (req, res) => {
     let { name } = req.body;
 
     const response = await run(name);
     res.send(response);
-});
+}));
+
+app.all("*", (req, res, next) => {
+    throw new ExpressError(404, "Page Not Found!");
+})
+
+//Error handling Middleware
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = "Something went wrong!" } = err;
+    res.status(statusCode).send(message);
+})
 
 app.listen(8080, () => {
     console.log("App is listening at port 8080");
