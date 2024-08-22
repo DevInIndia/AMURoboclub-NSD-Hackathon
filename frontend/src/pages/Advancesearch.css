@@ -35,11 +35,19 @@
     width: 90%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+
+.input>p{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .input>input {
     padding-left: 0.25rem;
+}
+
+.input>input[type="number"]{
+    width: 180.8px;
 }
 
 .Enterinfo {
@@ -49,6 +57,7 @@
     background-color: #15babf;
     border-radius: 3px;
     font-size: 1rem;
+    cursor: pointer;
 }
 
 .Enterinfo:hover {
