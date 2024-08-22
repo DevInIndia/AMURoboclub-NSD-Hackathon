@@ -27,12 +27,14 @@ main {
     flex-direction: row;
     background-color: #b1f3f3;
     box-shadow: 1px 1px 7px black;
+    padding: 0.5rem;
 }
 
 .Inputfield {
     width: 90%;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .textInput {
@@ -42,6 +44,7 @@ main {
     border: 1px solid #ccc;
     font-size: 16px;
     box-sizing: border-box;
+    height: 44px;
 }
 
 .startConversation {
@@ -50,13 +53,13 @@ main {
     color: white;
     /* White text */
     border: none;
+    border-radius: 0.25rem;
     cursor: pointer;
     font-size: 16px;
     margin-left: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .startConversation:hover {
@@ -92,4 +95,20 @@ main {
 
 .advancedsearch:hover {
     background-color: #adcc24;
+}
+
+@media(max-width: 850px){
+    .Inputfield {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .textInput{
+        width: 100%;
+    }
+
+    .startConversation{
+        width: 40%;
+        min-width: 210px;
+    }
 }
