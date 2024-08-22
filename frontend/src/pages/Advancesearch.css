@@ -1,9 +1,10 @@
-*{
+* {
     margin: 0;
     padding: 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-.advanceSection{
+
+.advanceSection {
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -11,12 +12,13 @@
     align-items: center;
     flex-direction: column;
     background-color: #cffffd;
-    
+
 }
-.advanceInputfield{
+
+.advanceInputfield {
     height: 70%;
     width: 50%;
-    border:2px solid black;
+    border: 2px solid black;
     border-radius: 10px;
     display: flex;
     justify-content: space-around;
@@ -26,21 +28,38 @@
     background-color: #b1f3f3;
     box-shadow: 1px 1px 7px black;
 }
-.input{    
+
+.input {
     font-size: 1.5rem;
+    border-radius: 0.25rem;
     width: 90%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
-.Enterinfo{
+
+.input>p{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.input>input {
+    padding-left: 0.25rem;
+}
+
+.input>input[type="number"]{
+    width: 180.8px;
+}
+
+.Enterinfo {
     width: 200px;
     height: 30px;
     margin-top: 20px;
     background-color: #15babf;
-    border-radius:3px;
+    border-radius: 3px;
     font-size: 1rem;
+    cursor: pointer;
 }
+
 .Enterinfo:hover {
-    background-color: #adcc24; 
+    background-color: #adcc24;
 }
