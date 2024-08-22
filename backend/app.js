@@ -42,11 +42,8 @@ app.get("/", (req, res) => {
 app.post('/api/advanced-search', wrapAsync((req, res) => {
     const {temp, lumin, magni, color, spect, radii} = req.body;
 
-    // console.log(temp, lumin, magni, color, spect);
-    // res.send(`${temp}, ${lumin}, ${magni}, ${color}, ${spect}`)
-
-    const query = [temp, lumin, magni, color, spect, radii];
-    res.send(query);
+    const query = {Temperature: temp, Relative_Luminosity: lumin, Absolute_Magnitude: magni, Color: color, Spectral_Class: spect,Relative_Radius: radii};
+    res.json(query);
 }));
 
 app.post('/search', wrapAsync(async (req, res) => {

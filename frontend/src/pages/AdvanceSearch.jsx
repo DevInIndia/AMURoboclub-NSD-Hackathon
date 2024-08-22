@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"
 import "./Advancesearch.css";
 
 const AdvanceSearch = () => {
@@ -8,6 +9,7 @@ const AdvanceSearch = () => {
   let [color, setColor] = useState("");
   let [spect, setSpect] = useState("");
   let [radii, setRadii] = useState("");
+  let [searchedContent, setSearchedContent] = useState("");
 
   const changeTemp = (e) => {
     setTemp(e.target.value);
@@ -44,28 +46,28 @@ const AdvanceSearch = () => {
     <div className="advanceSection">
       <form className="advanceInputfield" action="http://localhost:8080/api/advanced-search" method="POST">
         <div className="input">
-          <p>Temprature</p>
-          <input type="number" placeholder="Temprature in Kelvin" name="temp" value={temp} onChange={changeTemp} />
+          <p>Temperature</p>
+          <input type="number" placeholder="Temprature in Kelvin" name="temp" value={temp} onChange={changeTemp} required/>
         </div>
         <div className="input">
-          <p>Luminosity</p>
-          <input type="number" placeholder="Relative Luminosity" name="lumin" value={lumin} onChange={changeLumin} />
+          <p>Relative Luminosity</p>
+          <input type="number" placeholder="Relative Luminosity" name="lumin" value={lumin} onChange={changeLumin} required/>
         </div>
         <div className="input">
           <p>Abosolute magnitude</p>
-          <input type="number" placeholder="Abosolute magnitude" name="magni" value={magni} onChange={changeMagni} />
+          <input type="number" placeholder="Abosolute magnitude" name="magni" value={magni} onChange={changeMagni} required/>
         </div>
         <div className="input">
           <p>Color</p>
-          <input type="number" placeholder="Color of the star" name="color" value={color} onChange={changeColor} />
+          <input type="number" placeholder="Color of the star" name="color" value={color} min={1} max={6} onChange={changeColor} required/>
         </div>
         <div className="input">
-          <p>Spectral class of the star</p>
-          <input type="number" placeholder="Spectral class" name="spect" value={spect} onChange={changeSpect} />
+          <p>Spectral class of star</p>
+          <input type="number" placeholder="Spectral class" name="spect" min={1} max={6} value={spect} onChange={changeSpect} required/>
         </div>
         <div className="input">
           <p>Radius of the Star</p>
-          <input type="number" placeholder="Radius of the star" name="radii" value={radii} onChange={changeRadii} />
+          <input type="number" placeholder="Radius of the star" name="radii" value={radii} onChange={changeRadii} required/>
         </div>
         <button onClick={handleClick} className="Enterinfo">Search</button>
       </form>
