@@ -27,12 +27,16 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 async function run(name) {
+  try {
     const prompt = `Give me the answer of ${name} in terms of astronomy and space`;
-
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
     return text;
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    return "Sorry, I couldn't fetch the astronomical information at this time.";
+  }
 }
 
 app.get("/", (req, res) => {
