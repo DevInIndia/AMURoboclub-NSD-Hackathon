@@ -1,11 +1,19 @@
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { getAuth } from "firebase-admin/auth";
+import "./firebase.js";
+import { verifyFirebaseToken } from "./middlewares/verifyFirebaseToken.js";
+import ExpressError from "./utils/ExpressError.js";
+
+
+import wrapAsync from "./utils/wrapAsync.js";
+
+
 const app = express();
-const cors = require('cors');
-const ExpressError = require("./utils/ExpressError.js");
-const wrapAsync = require("./utils/wrapAsync.js");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -23,7 +31,6 @@ app.options('*', cors({
 }));
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 async function run(name) {
@@ -40,33 +47,39 @@ async function run(name) {
 }
 
 app.get("/", (req, res) => {
-    res.send("Working");
-})
+  res.send("Working");
+});
 
-app.post('/api/advanced-search', wrapAsync((req, res) => {
-    const {temp, lumin, magni, color, spect, radii} = req.body;
-
-    const query = {Temperature: temp, Relative_Luminosity: lumin, Absolute_Magnitude: magni, Color: color, Spectral_Class: spect,Relative_Radius: radii};
-    res.json(query);
+app.post("/api/advanced-search", wrapAsync((req, res) => {
+  const { temp, lumin, magni, color, spect, radii } = req.body;
+  const query = {
+    Temperature: temp,
+    Relative_Luminosity: lumin,
+    Absolute_Magnitude: magni,
+    Color: color,
+    Spectral_Class: spect,
+    Relative_Radius: radii,
+  };
+  res.json(query);
 }));
 
-app.post('/search', wrapAsync(async (req, res) => {
-    let { name } = req.body;
-
-    const response = await run(name);
-    res.send(response);
+app.post("/search", verifyFirebaseToken, wrapAsync(async (req, res) => {
+  let { name } = req.body;
+  const response = await run(name);
+  res.send(response);
 }));
+
 
 app.all("*", (req, res, next) => {
-    throw new ExpressError(404, "Page Not Found!");
-})
+  throw new ExpressError(404, "Page Not Found!");
+});
 
-//Error handling Middleware
+// Error handling middleware
 app.use((err, req, res, next) => {
-    let { statusCode = 500, message = "Something went wrong!" } = err;
-    res.status(statusCode).send(message);
-})
+  let { statusCode = 500, message = "Something went wrong!" } = err;
+  res.status(statusCode).send(message);
+});
 
 app.listen(8080, () => {
-    console.log("App is listening at port 8080");
-})
+  console.log("App is listening at port 8080");
+});
