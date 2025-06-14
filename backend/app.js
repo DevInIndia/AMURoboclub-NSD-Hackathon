@@ -3,15 +3,14 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
+import multer from "multer";
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getAuth } from "firebase-admin/auth";
 import "./firebase.js";
 import { verifyFirebaseToken } from "./middlewares/verifyFirebaseToken.js";
 import ExpressError from "./utils/ExpressError.js";
-
-
 import wrapAsync from "./utils/wrapAsync.js";
-
 
 const app = express();
 
@@ -19,33 +18,37 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(cors({
-    origin: "http://localhost:5173",
-    methods: "GET,POST",
-    credentials: true,
+  origin: "http://localhost:5173",
+  methods: "GET,POST",
+  credentials: true,
 }));
 
 app.options('*', cors({
-    origin: "http://localhost:5173",
-    methods: "GET,POST",
-    credentials: true,
+  origin: "http://localhost:5173",
+  methods: "GET,POST",
+  credentials: true,
 }));
 
+// ✅ Use in-memory storage (no saving to disk)
+const upload = multer({ storage: multer.memoryStorage() });
+
+// ✅ Gemini Setup (unchanged)
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
 async function run(name) {
   try {
     const prompt = `Give me the answer of ${name} in terms of astronomy and space`;
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const text = response.text();
-    return text;
+    return response.text();
   } catch (error) {
     console.error("Gemini API Error:", error);
     return "Sorry, I couldn't fetch the astronomical information at this time.";
   }
 }
 
+// Routes
 app.get("/", (req, res) => {
   res.send("Working");
 });
@@ -64,19 +67,60 @@ app.post("/api/advanced-search", wrapAsync((req, res) => {
 }));
 
 app.post("/search", verifyFirebaseToken, wrapAsync(async (req, res) => {
-  let { name } = req.body;
+  const { name } = req.body;
   const response = await run(name);
   res.send(response);
 }));
 
+// ✅ Upload Route (no disk write)
+app.post("/upload", upload.single("image"), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded." });
+  }
 
+  try {
+    const base64Image = req.file.buffer.toString("base64");
+    const mimeType = req.file.mimetype;
+
+    const imagePart = {
+      inlineData: {
+        data: base64Image,
+        mimeType: mimeType,
+      },
+    };
+
+    const prompt = {
+      role: "user",
+      parts: [
+        imagePart,
+        { text: "Describe the astronomical objects or scene in this image." },
+      ],
+    };
+
+    const result = await model.generateContent({
+      contents: [prompt],
+    });
+
+    const response = await result.response;
+    const text = response.text();
+
+    res.json({
+      message: "Image processed by Gemini successfully!",
+      geminiResponse: text,
+    });
+  } catch (error) {
+    console.error("Gemini Vision API Error:", error);
+    res.status(500).json({ error: "Failed to analyze image." });
+  }
+});
+
+// Error handling
 app.all("*", (req, res, next) => {
   throw new ExpressError(404, "Page Not Found!");
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
-  let { statusCode = 500, message = "Something went wrong!" } = err;
+  const { statusCode = 500, message = "Something went wrong!" } = err;
   res.status(statusCode).send(message);
 });
 

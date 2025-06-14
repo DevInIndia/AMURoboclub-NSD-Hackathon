@@ -2,20 +2,14 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import AdvanceSearch from "./pages/AdvanceSearch";
-import Login from "./components/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Stargazing from "./pages/Stargazing";
+import History from "./pages/History";
 
 const App = () => {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/" element={<Home />} />
       <Route
         path="/advance"
         element={
@@ -24,7 +18,8 @@ const App = () => {
           </ProtectedRoute>
         }
       />
-      <Route path="/login" element={<Login />} />
+      <Route path="/stargazing" element={<Stargazing />} />
+      <Route path="/history" element={<History />} />
     </Routes>
   );
 };
