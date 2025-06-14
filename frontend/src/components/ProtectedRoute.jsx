@@ -1,18 +1,8 @@
-import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const [user, setUser] = useState(undefined); // undefined = loading
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
+  const { user, loading } = useAuth();
 
   if (loading) return <div className="text-white text-center mt-20">Loading...</div>;
 
