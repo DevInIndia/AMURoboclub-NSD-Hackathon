@@ -105,7 +105,7 @@ const AdvancedSearch = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Header */}
+
       <div className="bg-black/20 backdrop-blur-sm border-b border-purple-500/20 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -126,7 +126,6 @@ const AdvancedSearch = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          {/* Introduction Card */}
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-purple-500/20 shadow-2xl p-6 mb-8">
             <h2 className="text-xl font-semibold text-white mb-3">🌟 Stellar Parameter Search</h2>
             <p className="text-gray-300 leading-relaxed">
@@ -135,7 +134,6 @@ const AdvancedSearch = () => {
             </p>
           </div>
 
-          {/* Search Form */}
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-purple-500/20 shadow-2xl p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {inputFields.map((field) => (
@@ -162,7 +160,6 @@ const AdvancedSearch = () => {
               ))}
             </div>
 
-            {/* Search Button */}
             <div className="flex justify-center">
               <button
                 onClick={handleSubmit}
@@ -175,7 +172,6 @@ const AdvancedSearch = () => {
             </div>
           </div>
 
-          {/* Results Section */}
           {showResults && (
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-purple-500/20 shadow-2xl p-6 mt-8 animate-fade-in">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
@@ -197,7 +193,6 @@ const AdvancedSearch = () => {
             </div>
           )}
 
-          {/* Info Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <div className="bg-white/10 backdrop-blur-lg rounded-xl border border-purple-500/20 p-6">
               <h3 className="text-lg font-semibold text-yellow-400 mb-3 flex items-center space-x-2">

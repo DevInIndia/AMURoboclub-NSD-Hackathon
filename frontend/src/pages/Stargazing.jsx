@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 const Stargazing = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col text-white relative overflow-hidden">
-      {/* Enhanced Stars in background */}
+      
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {[...Array(50)].map((_, i) => (
           <div
@@ -25,8 +25,6 @@ const Stargazing = () => {
             }}
           />
         ))}
-
-        {/* Subtle nebula effects */}
         <div
           className="absolute w-96 h-96 bg-purple-500/3 rounded-full blur-3xl animate-pulse"
           style={{ top: "20%", left: "10%", animationDuration: "8s" }}
@@ -45,9 +43,8 @@ const Stargazing = () => {
       <Header />
 
       <main className="flex-1 z-10 flex flex-col items-center justify-center text-center px-6 py-16 space-y-10">
-        {/* Enhanced main content card */}
         <div className="max-w-4xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl p-10 rounded-3xl border border-purple-500/30 shadow-2xl space-y-6 text-gray-200 text-left relative overflow-hidden">
-          {/* Subtle glow effect */}
+          
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 rounded-3xl"></div>
 
           <div className="relative">
@@ -174,13 +171,11 @@ const Stargazing = () => {
           </div>
         </div>
 
-        {/* Enhanced Stargazing Tools Section */}
         <section className="max-w-4xl w-full text-left space-y-8 text-gray-200">
           <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">
             ✨ Stargazing Tools
           </h2>
 
-          {/* Enhanced Live ISS Tracker */}
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-cyan-400/30 shadow-xl">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center">
@@ -199,7 +194,6 @@ const Stargazing = () => {
             />
           </div>
 
-          {/* Enhanced Sky Map */}
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-purple-500/30 shadow-xl">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
@@ -218,7 +212,6 @@ const Stargazing = () => {
             />
           </div>
 
-          {/* Enhanced Events Link */}
           <div className="text-center bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-pink-400/30 shadow-xl">
             <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-xl">🌟</span>
