@@ -20,6 +20,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadResponse, setUploadResponse] = useState(null);
+  const [isImageUploading, setIsImageUploading] = useState(false);
 
   const userInput = (e) => {
     setCurrVal(e.target.value);
@@ -32,24 +33,29 @@ function Home() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    if (!currVal.trim()) return;
+
+    if (!currVal.trim() && !uploadResponse) return;
 
     setIsOutputVisible(true);
     setIsLoading(true);
     setSearchedContent("Scanning distant galaxies for cosmic wisdom...");
 
     try {
-      const token = await user.getIdToken();
-      const response = await axios.post(
-        "http://localhost:8080/search",
-        { name: currVal },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setSearchedContent(response.data);
+      if (uploadResponse) {
+        setSearchedContent(uploadResponse.geminiResponse);
+      } else {
+        const token = await user.getIdToken();
+        const response = await axios.post(
+          "http://localhost:8080/search",
+          { name: currVal },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setSearchedContent(response.data);
+      }
     } catch (error) {
       console.error("API Error:", error);
       setSearchedContent(
@@ -67,27 +73,31 @@ function Home() {
       console.error("Login failed:", err);
     }
   };
+
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append("image", file);
+  setIsImageUploading(true);
+  const formData = new FormData();
+  formData.append("image", file);
 
-    try {
-      const res = await axios.post("http://localhost:8080/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+  try {
+    const res = await axios.post("http://localhost:8080/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-      setUploadResponse(res.data);
-      setImagePreview(URL.createObjectURL(file));
-      setIsOutputVisible(true);
-      setSearchedContent(res.data.geminiResponse); // Show Gemini response
-    } catch (err) {
-      console.error("Upload failed", err);
-      setSearchedContent("🛸 Failed to upload or process the image.");
-    }
-  };
+    setUploadResponse(res.data); // ✅ Just store it, don't show yet
+    setImagePreview(URL.createObjectURL(file));
+  } catch (err) {
+    console.error("Upload failed", err);
+    setSearchedContent("🛸 Failed to upload or process the image.");
+    setIsOutputVisible(true); // Show error output
+  } finally {
+    setIsImageUploading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
@@ -255,13 +265,10 @@ function Home() {
                             e.key === "Enter" && handleClick(e)
                           }
                         />
-                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-cyan-400/50">
-                          🔍
-                        </div>
                       </div>
                       <button
                         onClick={handleClick}
-                        disabled={!currVal.trim() || isLoading}
+                        disabled={(!currVal.trim() && !uploadResponse) || isLoading}
                         className="px-8 py-5 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 disabled:scale-100 shadow-2xl flex items-center space-x-3 min-w-fit relative overflow-hidden"
                       >
                         <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300" />
@@ -273,36 +280,91 @@ function Home() {
                     </div>
                   </div>
 
-                  <div className="w-full max-w-xl bg-white/10 p-6 rounded-2xl shadow-xl backdrop-blur-md text-white">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="mb-4 text-white"
-                    />
-                    {imagePreview && (
-                      <div className="mt-4">
-                        <p className="text-sm text-cyan-200 mb-2">Preview:</p>
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          className="rounded-lg max-h-64 object-contain border border-cyan-400"
+                  {/* Enhanced Image Upload Section */}
+                  <div className="w-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-2xl border border-cyan-400/30 shadow-xl overflow-hidden relative">
+                    {/* Animated border effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-purple-500/20 to-pink-500/20 opacity-0 hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+
+                    <div className="relative p-6">
+                      {/* Upload Area */}
+                      <div className="relative">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          disabled={isImageUploading}
                         />
-                      </div>
-                    )}
-                    {uploadResponse && (
-                      <div className="mt-4 text-green-400 text-sm">
-                        Uploaded to:{" "}
-                        <a
-                          href={uploadResponse.url}
-                          className="underline"
-                          target="_blank"
-                          rel="noreferrer"
+
+                        <div
+                          className={`
+                          relative border-2 border-dashed rounded-xl p-8 transition-all duration-300
+                          ${
+                            isImageUploading
+                              ? "border-purple-400/50 bg-purple-500/10"
+                              : "border-cyan-400/40 hover:border-cyan-400/70 hover:bg-cyan-400/5"
+                          }
+                        `}
                         >
-                          {uploadResponse.url}
-                        </a>
+                          <div className="text-center">
+                            {isImageUploading ? (
+                              <div className="space-y-3">
+                                <div className="w-12 h-12 mx-auto relative">
+                                  <div className="w-12 h-12 border-4 border-purple-400/30 border-t-purple-400 rounded-full animate-spin"></div>
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    <span className="text-lg animate-pulse">
+                                      🛸
+                                    </span>
+                                  </div>
+                                </div>
+                                <p className="text-purple-300 font-medium">
+                                  Analyzing cosmic imagery...
+                                </p>
+                                <p className="text-sm text-purple-400/80">
+                                  Decoding stellar patterns
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="space-y-3">
+                                <div>
+                                  <p className="text-white font-medium mb-1">
+                                    Upload an image from the cosmos
+                                  </p>
+                                </div>
+                                <div className="flex items-center justify-center space-x-2 mt-4">
+                                  <div className="px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 rounded-full border border-cyan-400/30">
+                                    <span className="text-cyan-300 text-sm font-medium">
+                                      Click to browse
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    )}
+
+                      {/* Image Preview */}
+                      {imagePreview && (
+                        <div className="mt-6 animate-fade-in">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <span className="text-sm text-cyan-300 font-medium">
+                              Preview:
+                            </span>
+                            <div className="flex-1 h-px bg-gradient-to-r from-cyan-400/30 to-transparent"></div>
+                          </div>
+                          <div className="relative group">
+                            <img
+                              src={imagePreview}
+                              alt="Cosmic Preview"
+                              className="w-full max-h-64 object-contain rounded-xl border border-cyan-400/50 shadow-lg transition-all duration-300 group-hover:shadow-cyan-400/25"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                          </div>
+                        </div>
+                      )}
+
+                    </div>
                   </div>
 
                   {/* Enhanced Output Section */}

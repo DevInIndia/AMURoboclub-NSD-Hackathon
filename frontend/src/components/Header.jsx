@@ -4,7 +4,7 @@ import { auth } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
-  const { user } = useAuth();
+  const { user,loading } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
 
@@ -16,6 +16,7 @@ const Header = () => {
       console.error("Error signing out:", error);
     }
   };
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -26,6 +27,8 @@ const Header = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  if (loading) return null;
 
   return (
     <header className="bg-black/20 backdrop-blur-md border-b border-purple-500/20 sticky top-0 z-10 shadow-lg">
