@@ -41,10 +41,26 @@ function Home() {
     setSearchedContent("Scanning distant galaxies for cosmic wisdom...");
 
     try {
+      const token = await user.getIdToken();
+
       if (uploadResponse) {
+        // Set response in UI
         setSearchedContent(uploadResponse.geminiResponse);
+
+        // Save to Firestore
+        await fetch("http://localhost:8080/api/savePrompt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            text: "[Image Upload]",
+            response: uploadResponse.geminiResponse,
+          }),
+        });
       } else {
-        const token = await user.getIdToken();
+        // Fetch Gemini response from text
         const response = await axios.post(
           "http://localhost:8080/search",
           { name: currVal },
@@ -54,7 +70,22 @@ function Home() {
             },
           }
         );
+
+        // Show response in UI
         setSearchedContent(response.data);
+
+        // Save to Firestore
+        await fetch("http://localhost:8080/api/savePrompt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            text: currVal,
+            response: response.data,
+          }),
+        });
       }
     } catch (error) {
       console.error("API Error:", error);
@@ -75,33 +106,31 @@ function Home() {
   };
 
   const handleImageUpload = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-  setIsImageUploading(true);
-  const formData = new FormData();
-  formData.append("image", file);
+    setIsImageUploading(true);
+    const formData = new FormData();
+    formData.append("image", file);
 
-  try {
-    const res = await axios.post("http://localhost:8080/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    try {
+      const res = await axios.post("http://localhost:8080/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-    setUploadResponse(res.data); // ✅ Just store it, don't show yet
-    setImagePreview(URL.createObjectURL(file));
-  } catch (err) {
-    console.error("Upload failed", err);
-    setSearchedContent("🛸 Failed to upload or process the image.");
-    setIsOutputVisible(true); // Show error output
-  } finally {
-    setIsImageUploading(false);
-  }
-};
-
+      setUploadResponse(res.data); // ✅ Just store it, don't show yet
+      setImagePreview(URL.createObjectURL(file));
+    } catch (err) {
+      console.error("Upload failed", err);
+      setSearchedContent("🛸 Failed to upload or process the image.");
+      setIsOutputVisible(true); // Show error output
+    } finally {
+      setIsImageUploading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
-      {/* Enhanced Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Nebula-like background elements */}
         <div
@@ -192,7 +221,7 @@ function Home() {
             </div>
           ) : (
             <>
-              {/* Corrected Solar System Animation */}
+              {/*Solar System Animation */}
               <div className="relative w-full h-40 flex justify-center items-center mb-6 overflow-visible">
                 <div className="relative w-32 h-32 z-10">
                   {/* Central star (Sun) */}
@@ -240,9 +269,8 @@ function Home() {
                 </div>
               </div>
 
-              {/* Enhanced Search Interface */}
               <div className="w-full max-w-5xl bg-white/10 backdrop-blur-xl rounded-3xl border border-purple-500/30 shadow-2xl p-8 relative overflow-hidden">
-                {/* Subtle inner glow effect */}
+                
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 rounded-3xl" />
 
                 <div className="relative space-y-6">
@@ -268,7 +296,9 @@ function Home() {
                       </div>
                       <button
                         onClick={handleClick}
-                        disabled={(!currVal.trim() && !uploadResponse) || isLoading}
+                        disabled={
+                          (!currVal.trim() && !uploadResponse) || isLoading
+                        }
                         className="px-8 py-5 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 disabled:scale-100 shadow-2xl flex items-center space-x-3 min-w-fit relative overflow-hidden"
                       >
                         <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300" />
@@ -280,13 +310,12 @@ function Home() {
                     </div>
                   </div>
 
-                  {/* Enhanced Image Upload Section */}
+                  {/*Image Upload Section */}
                   <div className="w-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-2xl border border-cyan-400/30 shadow-xl overflow-hidden relative">
-                    {/* Animated border effect */}
+                    
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-purple-500/20 to-pink-500/20 opacity-0 hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
 
                     <div className="relative p-6">
-                      {/* Upload Area */}
                       <div className="relative">
                         <input
                           type="file"
@@ -344,7 +373,6 @@ function Home() {
                         </div>
                       </div>
 
-                      {/* Image Preview */}
                       {imagePreview && (
                         <div className="mt-6 animate-fade-in">
                           <div className="flex items-center space-x-2 mb-3">
@@ -363,11 +391,9 @@ function Home() {
                           </div>
                         </div>
                       )}
-
                     </div>
                   </div>
 
-                  {/* Enhanced Output Section */}
                   {isOutputVisible && (
                     <div className="bg-white/15 backdrop-blur-md rounded-2xl border border-purple-400/30 p-6 max-h-96 overflow-y-auto animate-fade-in relative">
                       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-t-2xl" />
@@ -375,7 +401,6 @@ function Home() {
                       <div className="prose prose-invert max-w-none">
                         {isLoading ? (
                           <div className="flex flex-col items-center space-y-4 text-cyan-300 py-8">
-                            {/* Space-themed loading animation */}
                             <div className="relative">
                               <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin"></div>
                               <div className="absolute inset-0 flex items-center justify-center">

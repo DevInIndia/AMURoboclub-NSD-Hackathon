@@ -33,13 +33,11 @@ const Header = () => {
   return (
     <header className="bg-black/20 backdrop-blur-md border-b border-purple-500/20 sticky top-0 z-10 shadow-lg">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo & Branding */}
         <div className="flex items-center space-x-3 text-yellow-400">
           <img src="/favicon.png" alt="Celestial Icon" className="w-6 h-6" />
           <h1 className="text-xl font-bold tracking-wide">Celestial Chatbot</h1>
         </div>
 
-        {/* Nav + Avatar */}
         <div className="relative flex items-center space-x-4" ref={dropdownRef}>
           <nav className="hidden md:flex items-center space-x-6">
             <a
@@ -49,20 +47,20 @@ const Header = () => {
               Home
             </a>
             <a
-              href="/history"
-              className="text-cyan-300 hover:text-white transition-colors duration-300 px-3 py-1 rounded-lg hover:bg-white/10"
-            >
-              History
-            </a>
-            <a
               href="/stargazing"
               className="text-cyan-300 hover:text-white transition-colors duration-300 px-3 py-1 rounded-lg hover:bg-white/10"
             >
               Stargazing
             </a>
+            <a
+              href="/history"
+              className="text-cyan-300 hover:text-white transition-colors duration-300 px-3 py-1 rounded-lg hover:bg-white/10"
+            >
+              History
+            </a>
+            
           </nav>
 
-          {/* Avatar */}
           <img
             src={user?.photoURL || "/person.png"}
             alt="User Profile"
@@ -73,7 +71,6 @@ const Header = () => {
             }}
           />
 
-          {/* Dropdown */}
           {dropdownOpen && user && (
             <div className="absolute right-0 top-12 w-56 bg-white/10 backdrop-blur-md border border-cyan-400/30 rounded-2xl shadow-xl z-50 overflow-hidden animate-fade-in">
               <div className="px-4 py-3 text-sm text-white border-b border-purple-400/30 flex items-center gap-3">

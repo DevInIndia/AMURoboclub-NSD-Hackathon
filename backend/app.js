@@ -4,7 +4,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import multer from "multer";
-
+import savePrompt from "./routes/savePrompt.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getAuth } from "firebase-admin/auth";
 import "./firebase.js";
@@ -22,7 +22,7 @@ app.use(cors({
   methods: "GET,POST",
   credentials: true,
 }));
-
+app.use("/api/savePrompt", savePrompt);
 app.options('*', cors({
   origin: "http://localhost:5173",
   methods: "GET,POST",
