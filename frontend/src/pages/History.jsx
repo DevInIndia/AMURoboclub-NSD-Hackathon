@@ -10,7 +10,7 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 const History = () => {
   const { user } = useAuth();
   const [prompts, setPrompts] = useState([]);
-  const [expandedCards, setExpandedCards] = useState(new Set());
+  const [expandedIds, setExpandedIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -33,14 +33,10 @@ const History = () => {
   };
 
   const toggleExpanded = (id) => {
-    const newExpanded = new Set(expandedCards);
-    if (newExpanded.has(id)) {
-      newExpanded.delete(id);
-    } else {
-      newExpanded.add(id);
-    }
-    setExpandedCards(newExpanded);
-  };
+  setExpandedIds(prev =>
+    prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+  );
+};
 
   const formatDate = (timestamp) => {
     if (!timestamp) return "Unknown date";
@@ -121,25 +117,29 @@ const History = () => {
               </p>
             </div>
           ) : (
-            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {filteredPrompts.map((prompt) => {
-                const isExpanded = expandedCards.has(prompt.id);
+                const isExpanded = expandedIds.includes(prompt.id);
                 const responsePreview =
-                  prompt.response.slice(0, 200) +
-                  (prompt.response.length > 200 ? "..." : "");
+                  prompt.response.slice(0, 180) +
+                  (prompt.response.length > 180 ? "..." : "");
 
                 return (
                   <div
                     key={prompt.id}
-                    className="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-purple-400/20 rounded-3xl shadow-xl hover:shadow-purple-400/30 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:border-cyan-400/40 overflow-hidden flex flex-col h-[450px]"
+                    className={`group relative bg-gradient-to-br from-white/12 to-white/5 backdrop-blur-lg border border-purple-400/20 rounded-2xl shadow-xl hover:shadow-purple-400/30 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:border-cyan-400/40 overflow-hidden flex flex-col ${
+                      isExpanded 
+                        ? "min-h-[600px] max-h-[800px]" 
+                        : "h-[480px]"
+                    }`}
                   >
-                    <div className="p-6 border-b border-white/10 flex-shrink-0">
+                    <div className="p-5 border-b border-white/10 flex-shrink-0 bg-gradient-to-r from-white/5 to-transparent">
                       <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h3 className="text-cyan-300 font-bold text-lg mb-2 line-clamp-2 group-hover:text-cyan-200 transition-colors min-h-[3.5rem]">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-cyan-300 font-bold text-base leading-tight mb-3 line-clamp-2 group-hover:text-cyan-200 transition-colors min-h-[2.5rem]">
                             {prompt.text}
                           </h3>
-                          <div className="flex items-center text-gray-400 text-sm space-x-4">
+                          <div className="flex items-center text-gray-400 text-xs space-x-3">
                             <span className="flex items-center space-x-1">
                               <span>📅</span>
                               <span>{formatDate(prompt.createdAt)}</span>
@@ -147,28 +147,32 @@ const History = () => {
                           </div>
                         </div>
 
-                        <div className="flex space-x-2 ml-4">
+                        <div className="flex space-x-2 ml-3 flex-shrink-0">
                           <button
-                            onClick={() => toggleExpanded(prompt.id)}
-                            className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all duration-200 hover:scale-110"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleExpanded(prompt.id);
+                            }}
+                            className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all duration-200 hover:scale-110 text-sm"
                             title={isExpanded ? "Collapse" : "Expand"}
                           >
                             {isExpanded ? "📤" : "📥"}
-                          </button>
+                          </button> 
                         </div>
                       </div>
                     </div>
 
-                    <div className="p-6 flex-1 flex flex-col">
+                    <div className="p-5 flex-1 flex flex-col min-h-0">
                       <div
-                        className={`relative transition-all duration-500 flex-1 ${
+                        className={`relative flex-1 transition-all duration-500 ${
                           isExpanded
-                            ? "overflow-y-auto max-h-[300px] pr-1"
+                            ? "overflow-y-auto scrollbar-hide"
                             : "overflow-hidden"
                         }`}
                       >
                         <div
-                          className="text-gray-200 prose prose-invert prose-sm max-w-none"
+                          className="text-gray-100 prose prose-invert prose-sm max-w-none leading-relaxed"
                           dangerouslySetInnerHTML={{
                             __html: parseMarkdown(
                               isExpanded ? prompt.response : responsePreview
@@ -176,24 +180,32 @@ const History = () => {
                           }}
                         />
 
-                        {!isExpanded && prompt.response.length > 200 && (
-                          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+                        {!isExpanded && prompt.response.length > 180 && (
+                          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent pointer-events-none" />
                         )}
                       </div>
 
-                      {prompt.response.length > 200 && (
-                        <button
-                          onClick={() => toggleExpanded(prompt.id)}
-                          className="mt-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 hover:from-cyan-500/30 hover:to-purple-500/30 border border-cyan-400/30 rounded-xl text-cyan-300 hover:text-cyan-200 transition-all duration-300 text-sm font-medium flex-shrink-0"
-                        >
-                          {isExpanded ? "Show Less ▲" : "Show More ▼"}
-                        </button>
+                      {prompt.response.length > 180 && (
+                        <div className="mt-4 flex-shrink-0">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleExpanded(prompt.id);
+                            }}
+                            className="w-full py-2.5 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 hover:from-cyan-500/30 hover:to-purple-500/30 border border-cyan-400/30 rounded-xl text-cyan-300 hover:text-cyan-200 transition-all duration-300 text-sm font-medium backdrop-blur-sm hover:backdrop-blur-md"
+                          >
+                            {isExpanded ? "Show Less ▲" : "Show More ▼"}
+                          </button>
+                        </div>
                       )}
                     </div>
 
-                    <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 animate-pulse" />
+                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/10 via-purple-400/10 to-pink-400/10 animate-pulse" />
                     </div>
+
+                   
                   </div>
                 );
               })}
@@ -212,52 +224,107 @@ const History = () => {
           overflow: hidden;
         }
 
+        /* Scrollbar Hiding */
+        .scrollbar-hide {
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* Internet Explorer 10+ */
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none; /* WebKit */
+        }
+
+        /* Prose Styling */
         .prose h1,
         .prose h2,
         .prose h3 {
           color: #67e8f9;
           margin-top: 1rem;
           margin-bottom: 0.5rem;
+          font-size: 1rem;
+          line-height: 1.4;
+        }
+
+        .prose h1 {
+          font-size: 1.1rem;
+        }
+
+        .prose h2 {
+          font-size: 1.05rem;
         }
 
         .prose p {
           margin-bottom: 0.75rem;
           line-height: 1.6;
+          color: #e2e8f0;
         }
 
         .prose ul,
         .prose ol {
           margin-left: 1rem;
           margin-bottom: 0.75rem;
+          padding-left: 0.5rem;
         }
 
         .prose li {
           margin-bottom: 0.25rem;
+          line-height: 1.5;
         }
 
         .prose code {
           background-color: rgba(255, 255, 255, 0.1);
-          padding: 0.2rem 0.4rem;
-          border-radius: 0.375rem;
-          font-size: 0.875rem;
+          padding: 0.15rem 0.3rem;
+          border-radius: 0.25rem;
+          font-size: 0.8rem;
+          color: #fbbf24;
         }
 
         .prose pre {
-          background-color: rgba(0, 0, 0, 0.3);
-          padding: 1rem;
+          background-color: rgba(0, 0, 0, 0.4);
+          padding: 0.75rem;
           border-radius: 0.5rem;
           overflow-x: auto;
-          margin: 1rem 0;
+          margin: 0.75rem 0;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .prose pre code {
+          background: none;
+          padding: 0;
+          color: #e2e8f0;
         }
 
         .prose blockquote {
-          border-left: 4px solid #67e8f9;
+          border-left: 3px solid #67e8f9;
           padding-left: 1rem;
           margin: 1rem 0;
           font-style: italic;
           color: #cbd5e1;
+          background: rgba(255, 255, 255, 0.05);
+          padding: 0.75rem 1rem;
+          border-radius: 0.25rem;
         }
 
+        .prose strong {
+          color: #f1f5f9;
+          font-weight: 600;
+        }
+
+        .prose em {
+          color: #cbd5e1;
+        }
+
+        .prose a {
+          color: #67e8f9;
+          text-decoration: underline;
+          text-decoration-color: rgba(103, 232, 249, 0.5);
+        }
+
+        .prose a:hover {
+          text-decoration-color: #67e8f9;
+        }
+
+        /* Animation */
         @keyframes twinkle {
           0%,
           100% {
@@ -272,6 +339,13 @@ const History = () => {
 
         .animate-twinkle {
           animation: twinkle 3s ease-in-out infinite;
+        }
+
+        /* Grid Auto-fit for responsive layout */
+        @media (min-width: 768px) {
+          .grid.gap-6.md\\:grid-cols-2.xl\\:grid-cols-3 {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          }
         }
       `}</style>
     </div>
