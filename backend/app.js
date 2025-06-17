@@ -14,31 +14,27 @@ import wrapAsync from "./utils/wrapAsync.js";
 
 const app = express();
 
-// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(
   cors({
-    origin: "*", 
+    origin: "https://amuroboclub-nsd-hackathon.onrender.com",
     methods: "GET,POST",
     credentials: true,
   })
 );
 
-// Routes
 app.use("/api/savePrompt", savePrompt);
 
 app.options("*", cors({
-  origin: "*",
+  origin: "https://amuroboclub-nsd-hackathon.onrender.com",
   methods: "GET,POST",
   credentials: true,
 }));
 
-// File upload setup
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Gemini API setup
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
@@ -54,12 +50,10 @@ async function run(name) {
   }
 }
 
-// Test route
 app.get("/", (req, res) => {
   res.send("Working");
 });
 
-// Advanced search mock route
 app.post("/api/advanced-search", wrapAsync((req, res) => {
   const { temp, lumin, magni, color, spect, radii } = req.body;
   const query = {
@@ -73,14 +67,12 @@ app.post("/api/advanced-search", wrapAsync((req, res) => {
   res.json(query);
 }));
 
-// Prompt search
 app.post("/search", verifyFirebaseToken, wrapAsync(async (req, res) => {
   const { name } = req.body;
   const response = await run(name);
   res.send(response);
 }));
 
-// Image upload + Gemini vision route
 app.post("/upload", upload.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded." });
@@ -122,7 +114,6 @@ app.post("/upload", upload.single("image"), async (req, res) => {
   }
 });
 
-// 404 error handler
 app.all("*", (req, res, next) => {
   throw new ExpressError(404, "Page Not Found!");
 });
