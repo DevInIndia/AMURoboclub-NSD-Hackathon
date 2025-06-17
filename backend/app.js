@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://amuroboclub-nsd-hackathon.onrender.com",
+    origin: "https://amuroboclub-nsd-hackathon.netlify.app",
     methods: "GET,POST",
     credentials: true,
   })
@@ -28,7 +28,7 @@ app.use(
 app.use("/api/savePrompt", savePrompt);
 
 app.options("*", cors({
-  origin: "https://amuroboclub-nsd-hackathon.onrender.com",
+  origin: "https://amuroboclub-nsd-hackathon.netlify.app",
   methods: "GET,POST",
   credentials: true,
 }));
