@@ -47,22 +47,22 @@ function Home() {
         // Set response in UI
         setSearchedContent(uploadResponse.geminiResponse);
 
-        // Save to Firestore
-        await fetch("http://localhost:8080/api/savePrompt", {
+        // Save to Firestore`${import.meta.env.VITE_BACKEND_URL}/upload`
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/savePrompt`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            text: "[Image Upload]",
-            response: uploadResponse.geminiResponse,
+            text: currVal,
+            response: response.data,
           }),
         });
       } else {
         // Fetch Gemini response from text
         const response = await axios.post(
-          "http://localhost:8080/search",
+          `${import.meta.env.VITE_BACKEND_URL}/search`,
           { name: currVal },
           {
             headers: {
@@ -75,7 +75,7 @@ function Home() {
         setSearchedContent(response.data);
 
         // Save to Firestore
-        await fetch("http://localhost:8080/api/savePrompt", {
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/savePrompt`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -114,9 +114,13 @@ function Home() {
     formData.append("image", file);
 
     try {
-      const res = await axios.post("http://localhost:8080/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/upload`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       setUploadResponse(res.data); // ✅ Just store it, don't show yet
       setImagePreview(URL.createObjectURL(file));
@@ -270,7 +274,6 @@ function Home() {
               </div>
 
               <div className="w-full max-w-5xl bg-white/10 backdrop-blur-xl rounded-3xl border border-purple-500/30 shadow-2xl p-8 relative overflow-hidden">
-                
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 rounded-3xl" />
 
                 <div className="relative space-y-6">
@@ -312,7 +315,6 @@ function Home() {
 
                   {/*Image Upload Section */}
                   <div className="w-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-2xl border border-cyan-400/30 shadow-xl overflow-hidden relative">
-                    
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-purple-500/20 to-pink-500/20 opacity-0 hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
 
                     <div className="relative p-6">
