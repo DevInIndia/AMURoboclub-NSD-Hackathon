@@ -24,6 +24,12 @@ export async function fetchClassifierOptions() {
   return data;
 }
 
+/** Planet classes and the methodology citations. Needs no auth. */
+export async function fetchExoplanetOptions() {
+  const { data } = await client.get("/api/exoplanet/options");
+  return data;
+}
+
 /**
  * Backend calls that require a signed-in user. The Auth0 access token is
  * fetched per request, so it is always current.
@@ -81,6 +87,16 @@ export function useApi() {
         const { data } = await authorized({
           method: "post",
           url: "/api/advanced-search",
+          data: parameters,
+        });
+        return data;
+      },
+
+      /** Characterise a planet. Pure computation -- no LLM call behind it. */
+      async characteriseExoplanet(parameters) {
+        const { data } = await authorized({
+          method: "post",
+          url: "/api/exoplanet",
           data: parameters,
         });
         return data;

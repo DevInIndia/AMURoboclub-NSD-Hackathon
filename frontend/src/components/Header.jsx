@@ -28,6 +28,7 @@ const Header = () => {
     ...(isAuthenticated
       ? [
           { to: "/advance", label: "Classifier" },
+          { to: "/exoplanet", label: "Exoplanets" },
           { to: "/history", label: "Archive" },
         ]
       : []),
