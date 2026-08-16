@@ -11,10 +11,13 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
+import PublicIcon from "@mui/icons-material/Public";
+import TimelineIcon from "@mui/icons-material/Timeline";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import StarField from "../components/StarField";
 import Spinner from "../components/Spinner";
+import HRDiagram from "../components/HRDiagram";
 import { useApi, fetchClassifierOptions, errorMessage } from "../lib/api";
 
 const parseMarkdown = (markdown) => DOMPurify.sanitize(marked.parse(markdown || ""));
@@ -418,8 +421,32 @@ const AdvancedSearch = () => {
                 </p>
               </section>
 
-              {result.explanation && (
+              {/* The same catalogue the classifier learnt from, with this
+                  star marked -- it shows why the prediction came out as it
+                  did rather than asking the reader to take it on trust. */}
+              {options?.referenceStars?.length > 0 && (
                 <section className="nm-surface space-y-4 p-8">
+                  <div className="flex items-center gap-3">
+                    <span className="text-accent">
+                      <TimelineIcon />
+                    </span>
+                    <h3 className="text-lg font-semibold text-slate-100">
+                      Where it sits on the H–R diagram
+                    </h3>
+                  </div>
+                  <HRDiagram
+                    referenceStars={options.referenceStars}
+                    classes={options.classes}
+                    star={{
+                      temperature: result.input.temperature,
+                      luminosity: result.input.luminosity,
+                    }}
+                  />
+                </section>
+              )}
+
+              {result.explanation && (
+                <section className="nm-surface space-y-5 p-8">
                   <div className="flex items-center gap-3">
                     <span className="text-accent">
                       <ExploreOutlinedIcon />
@@ -428,12 +455,77 @@ const AdvancedSearch = () => {
                       What this means
                     </h3>
                   </div>
+
                   <div
                     className="prose prose-invert max-w-none"
                     dangerouslySetInnerHTML={{
                       __html: parseMarkdown(result.explanation),
                     }}
                   />
+
+                  {/* Fields below come from a schema-validated response, so
+                      they can be rendered as data rather than parsed out of
+                      prose. Absent when validation failed. */}
+                  {result.analysis && (
+                    <div className="space-y-4">
+                      <div className="nm-divider" />
+
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="nm-well space-y-1 p-4">
+                          <p className="text-xs uppercase tracking-wider text-slate-600">
+                            Evolutionary stage
+                          </p>
+                          <p className="text-slate-200">
+                            {result.analysis.evolutionaryStage}
+                          </p>
+                        </div>
+                        <div className="nm-well space-y-1 p-4">
+                          <p className="flex items-center gap-2 text-xs uppercase tracking-wider text-slate-600">
+                            <PublicIcon style={{ fontSize: 13 }} />
+                            Habitable zone
+                          </p>
+                          <p className="tabular-nums text-slate-200">
+                            {result.analysis.habitableZoneAU.innerBound} –{" "}
+                            {result.analysis.habitableZoneAU.outerBound} AU
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-xs uppercase tracking-wider text-slate-600">
+                          Evidence
+                        </p>
+                        <ul className="space-y-1.5">
+                          {result.analysis.keyEvidence.map((item) => (
+                            <li
+                              key={item}
+                              className="flex gap-2 text-sm text-slate-400"
+                            >
+                              <span className="text-accent">·</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <p className="text-sm text-slate-500">
+                        Comparable star:{" "}
+                        <span className="text-slate-300">
+                          {result.analysis.similarStar}
+                        </span>
+                      </p>
+
+                      {result.analysis.caveats.length > 0 && (
+                        <div className="space-y-1.5">
+                          {result.analysis.caveats.map((caveat) => (
+                            <p key={caveat} className="text-sm text-amber-300/80">
+                              {caveat}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </section>
               )}
 

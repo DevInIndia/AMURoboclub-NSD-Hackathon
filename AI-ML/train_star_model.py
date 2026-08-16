@@ -243,6 +243,18 @@ def main():
         "color_aliases": COLOR_ALIASES,
         "spectral_encoding": SPECTRAL_ENCODING,
         "classes": CLASSES,
+        # The catalogue the model learnt from, kept as plottable points so the
+        # UI can show a Hertzsprung-Russell diagram of the same data the
+        # classifier was trained on. Rounded to keep the payload small; the
+        # diagram cannot resolve more precision than this anyway.
+        "reference_stars": [
+            {
+                "t": int(row.Temperature),
+                "l": float(f"{row.L:.4g}"),
+                "type": int(row.Type),
+            }
+            for row in data.itertuples()
+        ],
         # The backend averages the per-class probabilities of every tree.
         "trees": [export_tree(estimator) for estimator in model.estimators_],
     }

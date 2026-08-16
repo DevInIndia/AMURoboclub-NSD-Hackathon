@@ -43,6 +43,13 @@ export const modelInfo = {
   })),
   colorOptions,
   spectralOptions,
+  // The training catalogue as plottable points, so the UI can show the user's
+  // star against the same data the classifier learnt from.
+  referenceStars: model.reference_stars.map(({ t, l, type }) => ({
+    temperature: t,
+    luminosity: l,
+    type,
+  })),
 };
 
 /**
