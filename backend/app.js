@@ -6,6 +6,7 @@ import multer from "multer";
 import archive from "./routes/archive.js";
 import advancedSearch from "./routes/advancedSearch.js";
 import exoplanet from "./routes/exoplanet.js";
+import spaceWeather from "./routes/spaceWeather.js";
 import { askAstronomy, describeImage } from "./services/gemini.js";
 import { checkQuestionScope } from "./services/guardrails.js";
 import { savePrompt } from "./db/archive.js";
@@ -72,6 +73,7 @@ app.get("/", (req, res) => {
 app.use("/api/archive", archive);
 app.use("/api/advanced-search", advancedSearch);
 app.use("/api/exoplanet", exoplanet);
+app.use("/api/space-weather", spaceWeather);
 
 const MAX_QUESTION_LENGTH = 500;
 

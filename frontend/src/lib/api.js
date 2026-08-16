@@ -24,6 +24,18 @@ export async function fetchClassifierOptions() {
   return data;
 }
 
+/** Live NOAA space weather. Public, cached server-side. */
+export async function fetchSpaceWeather() {
+  const { data } = await client.get("/api/space-weather");
+  return data;
+}
+
+/** Near-Earth close approaches from NASA NeoWs. Public, cached server-side. */
+export async function fetchAsteroids() {
+  const { data } = await client.get("/api/space-weather/asteroids");
+  return data;
+}
+
 /** Planet classes and the methodology citations. Needs no auth. */
 export async function fetchExoplanetOptions() {
   const { data } = await client.get("/api/exoplanet/options");

@@ -13,6 +13,9 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import StarField from "../components/StarField";
 import IssTracker from "../components/IssTracker";
+import SpaceWeatherBoard from "../components/SpaceWeatherBoard";
+import AsteroidWatch from "../components/AsteroidWatch";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 const FEATURES = [
   {
@@ -107,7 +110,17 @@ const Stargazing = () => (
           </div>
         </section>
 
-        <IssTracker />
+        <ErrorBoundary label="Space weather">
+          <SpaceWeatherBoard />
+        </ErrorBoundary>
+
+        <ErrorBoundary label="Near-Earth objects">
+          <AsteroidWatch />
+        </ErrorBoundary>
+
+        <ErrorBoundary label="The ISS tracker">
+          <IssTracker />
+        </ErrorBoundary>
 
         <section className="nm-surface space-y-4 p-8">
           <div className="flex items-center gap-3">
