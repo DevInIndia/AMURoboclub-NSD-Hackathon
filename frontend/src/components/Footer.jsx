@@ -1,18 +1,17 @@
-import React from 'react'
-const date = new Date();
-const Footer = () => {
-  return (
-    <footer className="bg-black/40 backdrop-blur-sm border-t border-purple-500/20 py-6">
-        <div className="container mx-auto px-4 text-center space-y-2">
-          <div className="text-gray-300">
-            © {date.getFullYear()}, Celestial Chatbot
-          </div>
-          <div className="text-gray-400">
-            <strong>Team:</strong> Code Clusters
-          </div>
-        </div>
-      </footer>
-  )
-}
+import React from "react";
 
-export default Footer
+const Footer = () => (
+  <footer className="mt-16 px-4 pb-10">
+    <div className="mx-auto max-w-6xl space-y-4">
+      <div className="nm-divider" />
+      <div className="flex flex-col items-center justify-between gap-2 text-sm text-slate-500 sm:flex-row">
+        <span>&copy; {new Date().getFullYear()} Celestial Chatbot</span>
+        <span>
+          Team <span className="text-slate-400">Code Clusters</span>
+        </span>
+      </div>
+    </div>
+  </footer>
+);
+
+export default Footer;
