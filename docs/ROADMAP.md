@@ -126,6 +126,10 @@ to end before scaling the corpus.
 
 ## Phase 5 — Space weather and near-Earth objects (as data, not models)
 
+**Status: done.** `backend/services/spaceWeather.js`, `nearEarthObjects.js`,
+`cache.js`, and the watchboard on the Stargazing page. Verified against the
+live feeds; the cache demonstrably serves 20 requests on zero NASA quota.
+
 Both blueprint items are better served without machine learning.
 
 - **Torino Scale is a defined function**, not a prediction: it is computed
@@ -190,7 +194,7 @@ visitors who open that page pay for it.
 | 2 | Exoplanet ESI + planet class | Medium | Low | **Done** |
 | 3 | H-R diagram | Medium | Low | **Done** |
 | 4 | pgvector RAG | High | Medium | Prove narrow, then scale |
-| 5 | NeoWs + NOAA space weather | Low | Low | Do as data, not ML |
+| 5 | NeoWs + NOAA space weather | Low | Low | **Done** |
 | 6 | Galaxy CV + sidecar | High | High | Only together, and only if wanted |
 | 7 | Three.js / Cesium | High | Medium | Last, and code-split |
 
