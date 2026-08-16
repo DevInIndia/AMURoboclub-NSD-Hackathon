@@ -6,6 +6,7 @@ import multer from "multer";
 import archive from "./routes/archive.js";
 import advancedSearch from "./routes/advancedSearch.js";
 import { askAstronomy, describeImage } from "./services/gemini.js";
+import { checkQuestionScope } from "./services/guardrails.js";
 import { savePrompt } from "./db/archive.js";
 import { requireAuth, userId } from "./middlewares/requireAuth.js";
 import { generalLimiter, aiLimiter, uploadLimiter } from "./middlewares/rateLimit.js";
@@ -88,6 +89,12 @@ app.post(
         400,
         `Questions are limited to ${MAX_QUESTION_LENGTH} characters.`
       );
+    }
+
+    // Refuse off-topic prompts before spending a token on them.
+    const scope = checkQuestionScope(name);
+    if (!scope.allowed) {
+      throw new ExpressError(400, scope.reason);
     }
 
     const answer = await askAstronomy(name);
