@@ -1,129 +1,153 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "./loadEnv.js"; // must stay first: everything below reads process.env
 
 import express from "express";
 import cors from "cors";
 import multer from "multer";
-import savePrompt from "./routes/savePrompt.js";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { getAuth } from "firebase-admin/auth";
-import "./firebase.js";
-import { verifyFirebaseToken } from "./middlewares/verifyFirebaseToken.js";
+import archive from "./routes/archive.js";
+import advancedSearch from "./routes/advancedSearch.js";
+import { askAstronomy, describeImage } from "./services/gemini.js";
+import { savePrompt } from "./db/archive.js";
+import { requireAuth, userId } from "./middlewares/requireAuth.js";
+import { generalLimiter, aiLimiter, uploadLimiter } from "./middlewares/rateLimit.js";
+import { validateImageUpload } from "./middlewares/validateImage.js";
+import { securityHeaders } from "./middlewares/securityHeaders.js";
 import ExpressError from "./utils/ExpressError.js";
 import wrapAsync from "./utils/wrapAsync.js";
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// Behind Render/Netlify the client address arrives in X-Forwarded-For; without
+// this every request looks like it comes from the proxy and IP-based rate
+// limits would apply to all users collectively. Kept opt-in so a directly
+// exposed server cannot be tricked by a spoofed header.
+if (process.env.TRUST_PROXY) {
+  app.set("trust proxy", Number(process.env.TRUST_PROXY) || 1);
+}
+
+// No route consumes form-encoded bodies -- only JSON and multipart -- so the
+// urlencoded parser is removed rather than merely patched. 32kb is generous
+// for a question while capping how much text one request can push at Gemini.
+app.use(securityHeaders);
+app.use(express.json({ limit: "32kb" }));
+
+app.use(generalLimiter);
+
+// Deployed origins come from ALLOWED_ORIGINS (comma separated); the Vite dev
+// server is always allowed so the project runs locally out of the box.
+const allowedOrigins = [
+  ...(process.env.ALLOWED_ORIGINS?.split(",").map((o) => o.trim()).filter(Boolean) ?? []),
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+];
 
 app.use(
   cors({
-    origin: "https://amuroboclub-nsd-hackathon.netlify.app",
+    origin(origin, callback) {
+      // No origin header: curl, health checks, same-origin requests.
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      callback(new ExpressError(403, `Origin ${origin} is not allowed.`));
+    },
     methods: "GET,POST",
     credentials: true,
   })
 );
 
-app.use("/api/savePrompt", savePrompt);
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
-app.options("*", cors({
-  origin: "https://amuroboclub-nsd-hackathon.netlify.app",
-  methods: "GET,POST",
-  credentials: true,
-}));
-
-const upload = multer({ storage: multer.memoryStorage() });
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
-
-async function run(name) {
-  try {
-    const prompt = `Give me the answer of ${name} in terms of astronomy and space`;
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text();
-  } catch (error) {
-    console.error("Gemini API Error:", error);
-    return "Sorry, I couldn't fetch the astronomical information at this time.";
-  }
-}
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: MAX_IMAGE_BYTES },
+  fileFilter: (req, file, callback) => {
+    if (file.mimetype.startsWith("image/")) return callback(null, true);
+    callback(new ExpressError(400, "Only image files can be analysed."));
+  },
+});
 
 app.get("/", (req, res) => {
   res.send("Working");
 });
 
-app.post("/api/advanced-search", wrapAsync((req, res) => {
-  const { temp, lumin, magni, color, spect, radii } = req.body;
-  const query = {
-    Temperature: temp,
-    Relative_Luminosity: lumin,
-    Absolute_Magnitude: magni,
-    Color: color,
-    Spectral_Class: spect,
-    Relative_Radius: radii,
-  };
-  res.json(query);
-}));
+app.use("/api/archive", archive);
+app.use("/api/advanced-search", advancedSearch);
 
-app.post("/search", verifyFirebaseToken, wrapAsync(async (req, res) => {
-  const { name } = req.body;
-  const response = await run(name);
-  res.send(response);
-}));
+const MAX_QUESTION_LENGTH = 500;
 
-app.post("/upload", upload.single("image"), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded." });
-  }
+app.post(
+  "/search",
+  requireAuth,
+  aiLimiter,
+  wrapAsync(async (req, res) => {
+    const { name } = req.body;
+    if (typeof name !== "string" || !name.trim()) {
+      throw new ExpressError(400, "Please include a question to ask.");
+    }
+    // Every character here becomes tokens we pay for, so the ceiling is
+    // enforced server-side rather than trusting the input's maxLength.
+    if (name.length > MAX_QUESTION_LENGTH) {
+      throw new ExpressError(
+        400,
+        `Questions are limited to ${MAX_QUESTION_LENGTH} characters.`
+      );
+    }
 
-  try {
-    const base64Image = req.file.buffer.toString("base64");
-    const mimeType = req.file.mimetype;
+    const answer = await askAstronomy(name);
 
-    const imagePart = {
-      inlineData: {
-        data: base64Image,
-        mimeType: mimeType,
-      },
-    };
+    // Archive here rather than in a second call from the browser: one round
+    // trip, and the answer is stored exactly as it was generated.
+    let archiveError = null;
+    try {
+      await savePrompt(userId(req), { prompt: name, response: answer });
+    } catch (error) {
+      console.error("Could not archive prompt:", error);
+      archiveError = "This answer could not be saved to your archive.";
+    }
 
-    const prompt = {
-      role: "user",
-      parts: [
-        imagePart,
-        { text: "Describe the astronomical objects or scene in this image." },
-      ],
-    };
+    res.json({ answer, archiveError });
+  })
+);
 
-    const result = await model.generateContent({
-      contents: [prompt],
-    });
-
-    const response = await result.response;
-    const text = response.text();
-
+app.post(
+  "/upload",
+  requireAuth,
+  uploadLimiter,
+  upload.single("image"),
+  validateImageUpload,
+  wrapAsync(async (req, res) => {
     res.json({
       message: "Image processed by Gemini successfully!",
-      geminiResponse: text,
+      geminiResponse: await describeImage(req.file.buffer, req.file.mimetype),
     });
-  } catch (error) {
-    console.error("Gemini Vision API Error:", error);
-    res.status(500).json({ error: "Failed to analyze image." });
-  }
-});
+  })
+);
 
 app.all("*", (req, res, next) => {
-  throw new ExpressError(404, "Page Not Found!");
+  next(new ExpressError(404, "Page Not Found!"));
 });
 
 app.use((err, req, res, next) => {
-  const { statusCode = 500, message = "Something went wrong!" } = err;
-  res.status(statusCode).send(message);
+  if (err instanceof multer.MulterError) {
+    const message =
+      err.code === "LIMIT_FILE_SIZE"
+        ? `Image must be smaller than ${MAX_IMAGE_BYTES / 1024 / 1024} MB.`
+        : "Upload failed.";
+    return res.status(400).json({ error: message });
+  }
+
+  // express-oauth2-jwt-bearer rejects bad or missing tokens with its own
+  // status and code; surface those as-is rather than as a generic 500.
+  const statusCode = err.statusCode || err.status || 500;
+
+  // Client errors describe what the caller did wrong and are safe to return.
+  // Server errors are not: their messages carry database hosts, credentials,
+  // file paths and driver internals, so they stay in the log.
+  if (statusCode >= 500) {
+    console.error(err);
+    return res.status(statusCode).json({ error: "Something went wrong." });
+  }
+
+  res.status(statusCode).json({ error: err.message || "Request failed." });
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`✅ App is listening at port ${PORT}`);
-});
+// Exported without listening so tests can drive it in-process; server.js owns
+// binding the port.
+export default app;
