@@ -1,5 +1,10 @@
 import "../loadEnv.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import {
+  StarAnalysisSchema,
+  GEMINI_STAR_ANALYSIS_SCHEMA,
+} from "../schemas/starAnalysis.js";
+import { findImpossibleValues } from "./guardrails.js";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // Google retires model versions, and the app broke once already because it was
@@ -19,10 +24,19 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  * Call Gemini, retrying the transient failures that free-tier keys run into
  * (rate limits and "model is experiencing high demand") with a short backoff.
  */
-async function generate(request) {
+async function generate(request, generationConfig) {
+  // Callers pass either a bare prompt string or a full request object. Spread
+  // only works on the latter, so normalise before attaching any config.
+  const payload =
+    typeof request === "string"
+      ? { contents: [{ role: "user", parts: [{ text: request }] }] }
+      : request;
+
   for (let attempt = 1; ; attempt++) {
     try {
-      const result = await model.generateContent(request);
+      const result = await model.generateContent(
+        generationConfig ? { ...payload, generationConfig } : payload
+      );
       return result.response.text();
     } catch (error) {
       if (attempt >= MAX_ATTEMPTS || !RETRY_STATUSES.has(error.status)) throw error;
@@ -63,29 +77,69 @@ export async function describeImage(buffer, mimeType) {
   });
 }
 
-/**
- * Explain a star classification in plain language.
- * The type is decided by the trained model, not by Gemini -- this only turns
- * that result into prose, so the wording must not contradict it.
- */
-export async function explainStarPrediction({ input, prediction, probabilities }) {
+const starPrompt = ({ input, prediction, probabilities }) => {
   const runnerUp = probabilities[1];
 
-  return generate(
+  return (
     `A machine-learning classifier trained on stellar data has classified a star ` +
-      `as a ${prediction.label} with ${(prediction.confidence * 100).toFixed(1)}% confidence, ` +
-      `based on these measurements:\n` +
-      `- Surface temperature: ${input.temperature} K\n` +
-      `- Luminosity: ${input.luminosity} times the Sun\n` +
-      `- Radius: ${input.radius} solar radii\n` +
-      `- Absolute magnitude: ${input.absoluteMagnitude}\n` +
-      `- Colour: ${input.color}\n` +
-      `- Spectral class: ${input.spectralClass}\n` +
-      (runnerUp ? `The next most likely type was ${runnerUp.label}.\n` : "") +
-      `\nIn under 200 words of markdown, explain to a curious beginner why a star ` +
-      `with these properties is a ${prediction.label}: point to the specific ` +
-      `measurements that give it away, place it on the Hertzsprung-Russell diagram, ` +
-      `and name a real star that resembles it. Do not contradict the classification ` +
-      `and do not invent measurements that were not given.`
+    `as a ${prediction.label} with ${(prediction.confidence * 100).toFixed(1)}% confidence, ` +
+    `based on these measurements:\n` +
+    `- Surface temperature: ${input.temperature} K\n` +
+    `- Luminosity: ${input.luminosity} times the Sun\n` +
+    `- Radius: ${input.radius} solar radii\n` +
+    `- Absolute magnitude: ${input.absoluteMagnitude}\n` +
+    `- Colour: ${input.color}\n` +
+    `- Spectral class: ${input.spectralClass}\n` +
+    (runnerUp ? `The next most likely type was ${runnerUp.label}.\n` : "") +
+    `\nExplain to a curious beginner why a star with these properties is a ` +
+    `${prediction.label}. The summary should be under 200 words. Point to the ` +
+    `specific measurements that give it away, estimate the habitable zone in AU ` +
+    `from the luminosity, and name a real star that resembles it. Do not ` +
+    `contradict the classification and do not invent measurements that were ` +
+    `not given.`
   );
+};
+
+/**
+ * Explain a star classification as validated, structured data.
+ *
+ * The type is decided by the trained model, not by Gemini -- this only turns
+ * that result into an explanation, so the wording must not contradict it.
+ *
+ * Returns { analysis, summary } where `analysis` is null if the model's output
+ * failed validation. The caller keeps the prediction either way: a bad
+ * write-up must never take the classification down with it.
+ */
+export async function explainStarPrediction(result) {
+  const raw = await generate(starPrompt(result), {
+    responseMimeType: "application/json",
+    responseSchema: GEMINI_STAR_ANALYSIS_SCHEMA,
+  });
+
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    console.error("Gemini returned unparseable JSON:", error.message);
+    return { analysis: null, summary: null };
+  }
+
+  const validated = StarAnalysisSchema.safeParse(parsed);
+  if (!validated.success) {
+    console.error(
+      "Gemini response failed schema validation:",
+      validated.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")
+    );
+    // The prose is still usable even when a structured field is malformed.
+    return { analysis: null, summary: typeof parsed.summary === "string" ? parsed.summary : null };
+  }
+
+  // Shape was right; now check the physics.
+  const impossible = findImpossibleValues(validated.data);
+  if (impossible.length) {
+    console.error("Gemini response contained impossible values:", impossible.join("; "));
+    return { analysis: null, summary: validated.data.summary };
+  }
+
+  return { analysis: validated.data, summary: validated.data.summary };
 }

@@ -20,11 +20,19 @@ router.post(
     const result = classifyStar(req.body);
 
     // The classification is the answer; the write-up is a bonus. If Gemini is
-    // rate-limited or down, still return the prediction rather than failing.
+    // rate-limited, down, or returns something that fails validation, still
+    // return the prediction rather than failing.
     let explanation = null;
+    let analysis = null;
     let explanationError = null;
     try {
-      explanation = await explainStarPrediction(result);
+      const written = await explainStarPrediction(result);
+      explanation = written.summary;
+      analysis = written.analysis;
+      if (!analysis) {
+        explanationError =
+          "The structured analysis could not be validated, so some details are omitted.";
+      }
     } catch (error) {
       console.error("Gemini explanation failed:", error);
       explanationError = "The AI write-up is unavailable right now.";
@@ -43,6 +51,7 @@ router.post(
     res.json({
       ...result,
       explanation,
+      analysis,
       explanationError,
       archiveError,
       model: {
