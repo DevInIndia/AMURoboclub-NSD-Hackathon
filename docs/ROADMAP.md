@@ -48,6 +48,11 @@ markdown, and they are what the H-R diagram in Phase 3 plots.
 
 ## Phase 2 — Exoplanet habitability (replacing the unusable flux model)
 
+**Status: done.** `backend/services/exoplanet.js`, `/api/exoplanet`, and the
+calculator page. Verified against published values: Earth scores exactly
+1.000000, Mars 0.721 against a published ~0.70, and the Sun's conservative
+habitable zone comes out at 0.950–1.676 AU against Kopparapu's 0.95–1.68.
+
 `AI-ML/exoplanet.py` asks for raw Kepler `FLUX.1`–`FLUX.5` values. No site
 visitor can supply those, which is why it was never wired up. Replacing its
 inputs with parameters a person can actually look up is the single best ML
@@ -181,9 +186,9 @@ visitors who open that page pay for it.
 
 | Phase | Item | Effort | Risk | Verdict |
 |---|---|---|---|---|
-| 1 | Zod/Gemini structured output + guards | Low | Low | **Do now** |
-| 2 | Exoplanet ESI + planet class | Medium | Low | Do next |
-| 3 | H-R diagram | Medium | Low | Do next |
+| 1 | Zod/Gemini structured output + guards | Low | Low | **Done** |
+| 2 | Exoplanet ESI + planet class | Medium | Low | **Done** |
+| 3 | H-R diagram | Medium | Low | **Done** |
 | 4 | pgvector RAG | High | Medium | Prove narrow, then scale |
 | 5 | NeoWs + NOAA space weather | Low | Low | Do as data, not ML |
 | 6 | Galaxy CV + sidecar | High | High | Only together, and only if wanted |

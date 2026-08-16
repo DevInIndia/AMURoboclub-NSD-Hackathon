@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import AdvanceSearch from "./pages/AdvanceSearch";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Stargazing from "./pages/Stargazing";
+import Exoplanet from "./pages/Exoplanet";
 import History from "./pages/History";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -21,6 +22,14 @@ const App = () => {
         element={
           <ProtectedRoute>
             <AdvanceSearch />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/exoplanet"
+        element={
+          <ProtectedRoute>
+            <Exoplanet />
           </ProtectedRoute>
         }
       />

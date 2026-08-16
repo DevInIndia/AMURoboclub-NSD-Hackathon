@@ -15,6 +15,7 @@ const PROTECTED = [
   ["get", "/api/archive/stats"],
   ["post", "/api/archive/prompts"],
   ["post", "/api/advanced-search"],
+  ["post", "/api/exoplanet"],
   ["post", "/search"],
   ["post", "/upload"],
 ];
@@ -71,6 +72,14 @@ describe("public endpoints", () => {
     const body = JSON.stringify(res.body);
     expect(body).not.toMatch(/test-key-not-real/);
     expect(body).not.toMatch(/postgres|password|secret|token/i);
+  });
+
+  it("serves exoplanet options without auth", async () => {
+    const res = await request(app).get("/api/exoplanet/options");
+    expect(res.status).toBe(200);
+    expect(res.body.planetClasses).toBeInstanceOf(Array);
+    // The methodology is cited, so a reader can check the numbers themselves.
+    expect(res.body.method.esi).toMatch(/Schulze-Makuch/);
   });
 
   it("returns 404 as JSON for unknown routes", async () => {
