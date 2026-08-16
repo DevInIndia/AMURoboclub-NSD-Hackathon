@@ -1,12 +1,21 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import LoadingScreen from "./LoadingScreen";
 
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+  const location = useLocation();
 
-  if (loading) return <div className="text-white text-center mt-20">Loading...</div>;
+  // Auth0 needs a moment to restore the session on a cold load; redirecting
+  // before it settles would bounce signed-in users to the login page.
+  if (isLoading) return <LoadingScreen message="Checking your credentials" />;
 
-  return user ? children : <Navigate to="/login" replace />;
+  if (!isAuthenticated) {
+    // Remember where they were headed so login can send them back.
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+
+  return children;
 };
 
 export default ProtectedRoute;

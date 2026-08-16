@@ -1,22 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { Link, NavLink } from "react-router-dom";
+import NightsStayIcon from "@mui/icons-material/NightsStay";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
-  const { user,loading } = useAuth();
+  const { user, isAuthenticated, isLoading, signOut } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      setDropdownOpen(false);
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
-  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -28,66 +21,109 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  if (loading) return null;
+  const links = [
+    { to: "/", label: "Home" },
+    { to: "/stargazing", label: "Stargazing" },
+    // Both of these are behind auth, so only offer them once signed in.
+    ...(isAuthenticated
+      ? [
+          { to: "/advance", label: "Classifier" },
+          { to: "/history", label: "Archive" },
+        ]
+      : []),
+  ];
 
   return (
-    <header className="bg-black/20 backdrop-blur-md border-b border-purple-500/20 sticky top-0 z-10 shadow-lg">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center space-x-3 text-yellow-400">
-          <img src="/favicon.png" alt="Celestial Icon" className="w-6 h-6" />
-          <h1 className="text-xl font-bold tracking-wide">Celestial Chatbot</h1>
-        </div>
+    <header className="sticky top-0 z-20 bg-space-base/90 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+        <Link to="/" className="flex items-center gap-3">
+          <span className="nm-flat-space-base-sm grid h-10 w-10 place-items-center rounded-full text-accent">
+            <NightsStayIcon fontSize="small" />
+          </span>
+          <span className="text-lg font-semibold tracking-wide text-slate-100">
+            Celestial Chatbot
+          </span>
+        </Link>
 
-        <div className="relative flex items-center space-x-4" ref={dropdownRef}>
-          <nav className="hidden md:flex items-center space-x-6">
-            <a
-              href="/"
-              className="text-cyan-300 hover:text-white transition-colors duration-300 px-3 py-1 rounded-lg hover:bg-white/10"
-            >
-              Home
-            </a>
-            <a
-              href="/stargazing"
-              className="text-cyan-300 hover:text-white transition-colors duration-300 px-3 py-1 rounded-lg hover:bg-white/10"
-            >
-              Stargazing
-            </a>
-            <a
-              href="/history"
-              className="text-cyan-300 hover:text-white transition-colors duration-300 px-3 py-1 rounded-lg hover:bg-white/10"
-            >
-              History
-            </a>
-            
+        <div className="flex items-center gap-3" ref={dropdownRef}>
+          <nav className="hidden items-center gap-2 md:flex">
+            {links.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={to === "/"}
+                className={({ isActive }) =>
+                  `rounded-xl px-4 py-2 text-sm transition-all duration-200 ${
+                    isActive
+                      ? "nm-inset-space-base-sm text-accent"
+                      : "text-slate-400 hover:text-slate-100"
+                  }`
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
           </nav>
 
-          <img
-            src={user?.photoURL || "/person.png"}
-            alt="User Profile"
-            className="w-9 h-9 rounded-full border border-cyan-400 cursor-pointer shadow-md transition-transform hover:scale-110"
-            title={user?.displayName || "Sign in"}
-            onClick={() => {
-              if (user) setDropdownOpen((prev) => !prev);
-            }}
-          />
-
-          {dropdownOpen && user && (
-            <div className="absolute right-0 top-12 w-56 bg-white/10 backdrop-blur-md border border-cyan-400/30 rounded-2xl shadow-xl z-50 overflow-hidden animate-fade-in">
-              <div className="px-4 py-3 text-sm text-white border-b border-purple-400/30 flex items-center gap-3">
-                <img
-                  src={user.photoURL}
-                  alt="avatar"
-                  className="w-8 h-8 rounded-full border border-cyan-300"
-                />
-                <span className="truncate">{user.displayName}</span>
-              </div>
+          {isLoading ? (
+            <span className="nm-flat-space-base-sm h-11 w-11 rounded-full" />
+          ) : isAuthenticated ? (
+            <div className="relative">
               <button
-                onClick={handleSignOut}
-                className="w-full px-4 py-3 text-left text-sm text-purple-300 hover:bg-blue-300/20 transition-colors"
+                type="button"
+                onClick={() => setDropdownOpen((open) => !open)}
+                className="nm-icon-button overflow-hidden p-0"
+                aria-haspopup="menu"
+                aria-expanded={dropdownOpen}
+                aria-label="Account menu"
               >
-                🚪 Sign Out
+                {user?.picture ? (
+                  <img
+                    src={user.picture}
+                    alt=""
+                    className="h-full w-full rounded-full object-cover"
+                  />
+                ) : (
+                  <PersonOutlineIcon fontSize="small" />
+                )}
               </button>
+
+              {dropdownOpen && (
+                <div
+                  role="menu"
+                  className="nm-surface absolute right-0 top-14 w-60 overflow-hidden p-2 animate-fade-in"
+                >
+                  <div className="px-4 py-3">
+                    <p className="truncate text-sm font-medium text-slate-100">
+                      {user?.name || "Signed in"}
+                    </p>
+                    {user?.email && (
+                      <p className="truncate text-xs text-slate-500">{user.email}</p>
+                    )}
+                  </div>
+
+                  <div className="nm-divider my-1" />
+
+                  <button
+                    type="button"
+                    onClick={signOut}
+                    role="menuitem"
+                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm text-slate-300 transition-colors hover:text-accent"
+                  >
+                    <LogoutIcon fontSize="small" />
+                    <span>Sign out</span>
+                  </button>
+                </div>
+              )}
             </div>
+          ) : (
+            <Link
+              to="/login"
+              className="nm-button flex items-center gap-2 px-5 py-2.5 text-sm"
+            >
+              <LoginIcon fontSize="small" />
+              <span>Sign in</span>
+            </Link>
           )}
         </div>
       </div>
