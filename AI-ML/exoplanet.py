@@ -1,70 +1,80 @@
-import random
+"""Exoplanet candidate classifier over Kepler light-curve flux readings.
+
+This is a standalone experiment -- unlike train_star_model.py it is not wired
+into the web app, because raw FLUX values are not something a site visitor can
+reasonably supply.  It is kept as a runnable module rather than a script so it
+can be imported and tested:
+
+    python exoplanet.py                       # train and report accuracy
+    python exoplanet.py 93.85 83.81 20.10 -26.98 -39.56
+
+A word of warning about the numbers it prints: exoTest.csv is heavily
+imbalanced (a handful of confirmed planets against hundreds of non-planets), so
+a model that always answers "no planet" already scores very well.  Accuracy
+alone is not evidence that this model works; the per-class report is.
+"""
+
+import sys
+from pathlib import Path
 
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import plotly.express as px
-import warnings
-warnings.filterwarnings('ignore')
-plt.style.use('fivethirtyeight')
-
-data = pd.read_csv("exoTest.csv")
-print(data.head(5))
-print(data.isnull().sum())  #no null values are there in our dataset.
-new_data = data[["LABEL","FLUX.1","FLUX.2","FLUX.3","FLUX.4","FLUX.5"]]
-print(new_data.columns)
-
-
-print(data['LABEL'].value_counts())
-
-from sklearn.model_selection import train_test_split
-random.seed(42)
-train_df,test_df = train_test_split(new_data,test_size=0.1,random_state=42)
-train_inputs = train_df.drop(["LABEL"],axis=1)
-train_targets = train_df["LABEL"]
-test_inputs = test_df.drop(["LABEL"],axis=1)
-test_targets = test_df["LABEL"]
-
-print(train_targets.head(5))
-print(train_inputs.columns)
-
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
-model1 = LogisticRegression()
-model1.fit(train_inputs,train_targets)
-predict1 = model1.predict(train_inputs)
-predict2 = model1.predict(test_inputs)
-a1 = accuracy_score(predict1,train_targets)
-print(a1)
-
 from sklearn.ensemble import HistGradientBoostingClassifier
-model2 = HistGradientBoostingClassifier()
-model2.fit(train_inputs,train_targets)
-p2 = model2.predict(train_inputs)
-p3 = model2.predict(test_inputs)
-a1 = accuracy_score(p2,train_targets)
-a2 = accuracy_score(p3,test_targets)
-print(a1,a2)
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.model_selection import train_test_split
 
-f1 = float(input("Enter the flux1: "))
-f2 = float(input("Enter the flux2: "))
-f3 = float(input("Enter the flux3: "))
-f4 = float(input("Enter the flux4: "))
-f5 = float(input("Enter the flux5: "))
+DATASET = Path(__file__).parent / "exoTest.csv"
+FLUX_COLUMNS = ["FLUX.1", "FLUX.2", "FLUX.3", "FLUX.4", "FLUX.5"]
 
-# Create a dictionary with the input values
-input_data = {
-    'FLUX.1': [f1],
-    'FLUX.2': [f2],
-    'FLUX.3': [f3],
-    'FLUX.4': [f4],
-    'FLUX.5': [f5]
+# The dataset labels rows 2 (confirmed exoplanet) and 1 (no exoplanet).
+LABELS = {1: "No exoplanet detected", 2: "Exoplanet candidate"}
 
-}
+_model = None
 
-# Convert the dictionary to a DataFrame
-input_df = pd.DataFrame(input_data)
-print(input_df)
 
-predict_input = model2.predict(input_df)
-print(predict_input)
+def train():
+    """Fit the classifier and return it along with its hold-out scores."""
+    data = pd.read_csv(DATASET, usecols=["LABEL"] + FLUX_COLUMNS)
+
+    train_df, test_df = train_test_split(
+        data, test_size=0.1, stratify=data["LABEL"], random_state=42
+    )
+
+    model = HistGradientBoostingClassifier(random_state=42)
+    model.fit(train_df[FLUX_COLUMNS], train_df["LABEL"])
+
+    predictions = model.predict(test_df[FLUX_COLUMNS])
+    report = classification_report(
+        test_df["LABEL"],
+        predictions,
+        target_names=[LABELS[1], LABELS[2]],
+        zero_division=0,
+    )
+    return model, accuracy_score(test_df["LABEL"], predictions), report
+
+
+def get_model():
+    """Return the fitted model, training it on first use."""
+    global _model
+    if _model is None:
+        _model, _, _ = train()
+    return _model
+
+
+def predict(flux_values):
+    """Classify one light curve from its first five flux readings."""
+    if len(flux_values) != len(FLUX_COLUMNS):
+        raise ValueError(f"Expected {len(FLUX_COLUMNS)} flux values, got {len(flux_values)}")
+
+    frame = pd.DataFrame([[float(v) for v in flux_values]], columns=FLUX_COLUMNS)
+    label = int(get_model().predict(frame)[0])
+    return {"label": label, "description": LABELS[label]}
+
+
+if __name__ == "__main__":
+    model, accuracy, report = train()
+    _model = model
+    print(f"Hold-out accuracy: {accuracy:.4f}\n")
+    print(report)
+
+    if len(sys.argv) > 1:
+        print(predict(sys.argv[1:]))
