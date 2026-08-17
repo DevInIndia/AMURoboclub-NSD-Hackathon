@@ -7,6 +7,7 @@ import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
 import HistoryIcon from "@mui/icons-material/History";
 import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../components/AuthLayout";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const PERKS = [
   { icon: <ChatBubbleOutlineIcon fontSize="small" />, text: "Ask anything about space and get answers in real time" },
@@ -15,6 +16,8 @@ const PERKS = [
 ];
 
 const Signup = () => {
+  useDocumentTitle("Create an account");
+
   const { isAuthenticated, isLoading, signup } = useAuth();
 
   if (isAuthenticated) return <Navigate to="/" replace />;

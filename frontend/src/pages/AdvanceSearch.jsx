@@ -19,6 +19,7 @@ import StarField from "../components/StarField";
 import Spinner from "../components/Spinner";
 import HRDiagram from "../components/HRDiagram";
 import { useApi, fetchClassifierOptions, errorMessage } from "../lib/api";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const parseMarkdown = (markdown) => DOMPurify.sanitize(marked.parse(markdown || ""));
 

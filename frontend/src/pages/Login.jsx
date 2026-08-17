@@ -5,8 +5,11 @@ import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../components/AuthLayout";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const Login = () => {
+  useDocumentTitle("Sign in");
+
   const { isAuthenticated, isLoading, login } = useAuth();
   const location = useLocation();
 

@@ -16,6 +16,7 @@ import IssTracker from "../components/IssTracker";
 import SpaceWeatherBoard from "../components/SpaceWeatherBoard";
 import AsteroidWatch from "../components/AsteroidWatch";
 import ErrorBoundary from "../components/ErrorBoundary";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const FEATURES = [
   {
@@ -42,7 +43,10 @@ const RESOURCES = [
   { name: "TimeAndDate Astronomy", href: "https://www.timeanddate.com/astronomy/", icon: <EventOutlinedIcon fontSize="small" /> },
 ];
 
-const Stargazing = () => (
+const Stargazing = () => {
+  useDocumentTitle("Stargazing guide");
+
+  return (
   <div className="relative min-h-screen overflow-hidden">
     <StarField count={60} />
 
@@ -159,6 +163,7 @@ const Stargazing = () => (
       <Footer />
     </div>
   </div>
-);
+  );
+};
 
 export default Stargazing;

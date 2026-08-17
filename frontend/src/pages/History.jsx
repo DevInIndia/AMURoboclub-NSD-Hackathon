@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import StarField from "../components/StarField";
 import Spinner from "../components/Spinner";
 import { useApi, errorMessage } from "../lib/api";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const parseMarkdown = (markdown) => DOMPurify.sanitize(marked.parse(markdown || ""));
 
@@ -56,6 +57,8 @@ const Measurements = ({ details }) => (
 );
 
 const History = () => {
+  useDocumentTitle("Archive");
+
   const api = useApi();
   const [entries, setEntries] = useState([]);
   const [expandedIds, setExpandedIds] = useState([]);

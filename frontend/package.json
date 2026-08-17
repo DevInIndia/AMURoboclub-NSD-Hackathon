@@ -22,7 +22,7 @@
     "marked": "^15.0.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.1",
+    "react-router-dom": "^7.18.2",
     "tailwindcss-neumorphism": "^0.1.0"
   },
   "devDependencies": {
@@ -39,5 +39,8 @@
     "postcss": "^8.5.5",
     "tailwindcss": "^3.4.3",
     "vite": "^5.4.1"
+  },
+  "engines": {
+    "node": ">=20 <25"
   }
 }

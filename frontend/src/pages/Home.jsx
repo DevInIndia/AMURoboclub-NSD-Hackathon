@@ -15,6 +15,7 @@ import StarField from "../components/StarField";
 import Spinner from "../components/Spinner";
 import AdvancedSearchButton from "../components/AdvancedSearchButton";
 import SourceList from "../components/SourceList";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const parseMarkdown = (markdown) => DOMPurify.sanitize(marked.parse(markdown || ""));
 
@@ -25,6 +26,8 @@ const SUGGESTIONS = [
 ];
 
 function Home() {
+  useDocumentTitle("Ask the cosmos");
+
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const api = useApi();
   const fileInputRef = useRef(null);

@@ -14,6 +14,7 @@ import Spinner from "../components/Spinner";
 import EsiGauge from "../components/EsiGauge";
 import HabitableZoneBar from "../components/HabitableZoneBar";
 import { useApi, fetchExoplanetOptions, errorMessage } from "../lib/api";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const REQUIRED_FIELDS = [
   {
@@ -106,6 +107,8 @@ const round = (value, places = 2) =>
   Number(value).toLocaleString(undefined, { maximumFractionDigits: places });
 
 const Exoplanet = () => {
+  useDocumentTitle("Exoplanet calculator");
+
   const api = useApi();
   const [form, setForm] = useState(EMPTY);
   const [options, setOptions] = useState(null);

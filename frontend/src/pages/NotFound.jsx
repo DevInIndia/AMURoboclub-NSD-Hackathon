@@ -2,8 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import StarField from "../components/StarField";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
-const NotFound = () => (
+const NotFound = () => {
+  useDocumentTitle("Page not found");
+
+  return (
   <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-6">
     <StarField count={40} />
 
@@ -22,6 +26,7 @@ const NotFound = () => (
       </Link>
     </div>
   </div>
-);
+  );
+};
 
 export default NotFound;
