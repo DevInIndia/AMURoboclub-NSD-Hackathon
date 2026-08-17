@@ -53,36 +53,95 @@ export const planetClasses = PLANET_CLASSES.map(({ label, description }) => ({
 
 // --- Mass estimation ---------------------------------------------------------
 
-// Forecaster gives radius as a function of mass, R = C * M^S, in three regimes.
-// Inverting it lets us estimate mass from a radius, which is the direction a
-// site visitor can actually supply.
-const FORECASTER = {
-  terran: { C: 1.008, S: 0.2790, maxRadius: 1.23 },
-  neptunian: { C: 0.808, S: 0.589, maxRadius: 14.3 },
-};
+/**
+ * Mass from radius, fitted in the direction it is used.
+ *
+ * The previous implementation inverted Chen & Kipping's R(M) relation
+ * algebraically. That is a statistical error rather than a coding one: R(M) is
+ * a median forward relation with intrinsic scatter, and flipping it does not
+ * give the median of the reverse conditional. Validated against 2,057 planets
+ * with measured masses, it returned a median predicted/measured ratio of 0.52
+ * -- masses roughly half what they should be, and 0.32 for giants.
+ *
+ * These coefficients regress log10(M) on log10(R) over the same 2,057 planets,
+ * with the intercept set by the median residual so the result is a median
+ * estimate rather than a geometric mean. Re-measured on the same set: 1.00
+ * overall and 1.00 for giants. See eval/fit-mass-radius.mjs.
+ *
+ * Regimes follow the physics: rocky bodies, volatile envelopes, and giants
+ * where electron degeneracy makes radius nearly independent of mass.
+ */
+/**
+ * Below 1.5 R-earth the empirical fit is not used, and deliberately so.
+ *
+ * Only 172 planets that small have measured masses, and they are a biased
+ * sample: a light planet produces a weak radial-velocity signal, so the ones
+ * we have managed to weigh are the heavy end of their size class. Fitting them
+ * gave Earth a mass of 2.07 M-earth and Mars 7.97 -- calibrated to the
+ * detection limit rather than to rock.
+ *
+ * Zeng et al. (2016) give M = R^3.7 for an Earth-like rocky composition. It is
+ * physically grounded, reproduces Earth exactly, Venus to 1% and Mars to 10%,
+ * and still matches marginally more exoplanets within a factor of two than the
+ * fit did (102 versus 100 of 172).
+ */
+const ROCKY_EXPONENT = 3.7;
+const ROCKY_MAX_RADIUS = 1.5;
+
+const MASS_RADIUS_FIT = [
+  { maxRadius: ROCKY_MAX_RADIUS, rocky: true },
+  { maxRadius: 8, intercept: 0.4928, slope: 1.1882 },
+  { maxRadius: Infinity, intercept: 1.5343, slope: 0.969 },
+];
+
+// The regimes are fitted independently, so their predictions do not meet at
+// the boundaries -- the step at 8 R-earth is nearly sevenfold, because massive
+// sub-Neptunes and low-mass Saturns are genuinely different populations that
+// happen to overlap in size. Blending across a narrow band keeps the physical
+// break without a cliff that would read as a bug.
+const BLEND_FRACTION = 0.15;
+
+const predictLogMass = (regime, logRadius) =>
+  regime.rocky
+    ? ROCKY_EXPONENT * logRadius
+    : regime.intercept + regime.slope * logRadius;
+
+function fittedMass(radiusEarths) {
+  const logRadius = Math.log10(radiusEarths);
+  const index = MASS_RADIUS_FIT.findIndex((r) => radiusEarths < r.maxRadius);
+  const regime = MASS_RADIUS_FIT[index];
+
+  // Near the upper boundary, mix in the next regime proportionally.
+  const boundary = regime.maxRadius;
+  const next = MASS_RADIUS_FIT[index + 1];
+  if (next && radiusEarths > boundary * (1 - BLEND_FRACTION)) {
+    const start = boundary * (1 - BLEND_FRACTION);
+    const weight = (radiusEarths - start) / (boundary - start);
+    return 10 ** (
+      (1 - weight) * predictLogMass(regime, logRadius) +
+      weight * predictLogMass(next, logRadius)
+    );
+  }
+
+  return 10 ** predictLogMass(regime, logRadius);
+}
 
 /**
  * Estimate mass from radius when the caller does not know it.
  *
- * Returns { massEarths, estimated: true, uncertain } -- `uncertain` marks the
- * giant-planet regime, where radius barely varies with mass (Jupiter and a
- * 5-Jupiter-mass planet are nearly the same size), so a radius simply does not
- * determine a mass there.
+ * Returns { massEarths, estimated: true, uncertain }. The `uncertain` flag
+ * marks the giant regime, where radius genuinely does not determine mass:
+ * Jupiter and a five-Jupiter-mass planet are nearly the same size. Even at
+ * best this estimate is order-of-magnitude -- across the validation set only
+ * half of planets fall within a factor of two of their measured mass, because
+ * radius simply is not very predictive of mass.
  */
 export function estimateMass(radiusEarths) {
-  if (radiusEarths < FORECASTER.terran.maxRadius) {
-    const { C, S } = FORECASTER.terran;
-    return { massEarths: (radiusEarths / C) ** (1 / S), estimated: true, uncertain: false };
-  }
-
-  if (radiusEarths < FORECASTER.neptunian.maxRadius) {
-    const { C, S } = FORECASTER.neptunian;
-    return { massEarths: (radiusEarths / C) ** (1 / S), estimated: true, uncertain: false };
-  }
-
-  // Degenerate regime: report Jupiter's mass as a placeholder and say plainly
-  // that the radius does not constrain it.
-  return { massEarths: 317.8, estimated: true, uncertain: true };
+  return {
+    massEarths: fittedMass(radiusEarths),
+    estimated: true,
+    uncertain: radiusEarths >= 8,
+  };
 }
 
 // --- Thermodynamics ----------------------------------------------------------
