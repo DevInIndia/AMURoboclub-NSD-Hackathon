@@ -87,8 +87,12 @@ clear message if any of them are missing.
 **Postgres.** Start one locally with Docker:
 
 ```bash
-docker run -d --name celestial-postgres -e POSTGRES_USER=celestial -e POSTGRES_PASSWORD=celestial_dev -e POSTGRES_DB=celestial -p 5433:5432 -v celestial-pgdata:/var/lib/postgresql/data postgres:16-alpine
+docker run -d --name celestial-postgres -e POSTGRES_USER=celestial -e POSTGRES_PASSWORD=celestial_dev -e POSTGRES_DB=celestial -p 5433:5432 -v celestial-pgdata-vector:/var/lib/postgresql/data pgvector/pgvector:pg16
 ```
+
+The image is `pgvector/pgvector:pg16` rather than plain Postgres because
+grounded answers need the `vector` extension. Plain Postgres still works — the
+migration reports that retrieval is disabled and answers are ungrounded.
 
 That maps to host port **5433** to avoid clashing with any Postgres you already
 run, and keeps data in a named volume across restarts. The matching URL is:
@@ -104,7 +108,19 @@ npm run db:migrate --prefix backend
 ```
 
 Any hosted Postgres works instead — paste its URL and TLS is enabled
-automatically for anything that is not localhost.
+automatically for anything that is not localhost. For grounded answers it needs
+pgvector; Neon and Supabase both ship it.
+
+**3. Knowledge corpus (optional)**
+
+```bash
+npm run ingest --prefix backend
+```
+
+Embeds astronomical constants, recent NASA APOD explanations and arXiv astro-ph
+abstracts into the `documents` table, so answers can cite sources. Re-runnable:
+passages are keyed on a content hash, so a second run updates rather than
+duplicates. Without it the chat still works, just ungrounded.
 
 **2. Frontend**
 
@@ -141,7 +157,7 @@ a new model.
 | `GET` | `/` | – | Health check. |
 | `GET` | `/api/advanced-search/options` | – | Model metadata plus the exact colour and spectral-class values the classifier accepts. The frontend builds its dropdowns from this, so the form can never submit a value the model wasn't trained on. |
 | `POST` | `/api/advanced-search` | Auth0 token | Classify a star from `temperature`, `luminosity`, `radius`, `absoluteMagnitude`, `color`, `spectralClass`. Returns the predicted type, the probability of every class, any range warnings, and a Gemini explanation. |
-| `POST` | `/search` | Auth0 token | Answer a free-text astronomy question. |
+| `POST` | `/search` | Auth0 token | Answer a free-text astronomy question, grounded in retrieved passages where they match. Returns the citations alongside the answer. |
 | `POST` | `/upload` | Auth0 token | Describe an uploaded image (max 5 MB, images only). |
 | `GET` | `/api/archive` | Auth0 token | The user's questions and classifications interleaved, newest first. `?q=` searches the whole archive in the database; `?limit=` caps the page (max 100). |
 | `GET` | `/api/archive/stats` | Auth0 token | Count and mean confidence per predicted star type. |

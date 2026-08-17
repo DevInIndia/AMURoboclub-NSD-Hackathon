@@ -10,6 +10,7 @@ import spaceWeather from "./routes/spaceWeather.js";
 import { askAstronomy, describeImage } from "./services/gemini.js";
 import { checkQuestionScope } from "./services/guardrails.js";
 import { savePrompt } from "./db/archive.js";
+import { retrieveContext } from "./db/knowledge.js";
 import { requireAuth, userId } from "./middlewares/requireAuth.js";
 import { generalLimiter, aiLimiter, uploadLimiter } from "./middlewares/rateLimit.js";
 import { validateImageUpload } from "./middlewares/validateImage.js";
@@ -101,7 +102,12 @@ app.post(
       throw new ExpressError(400, scope.reason);
     }
 
-    const answer = await askAstronomy(name);
+    // Retrieval never fails the request: an unavailable corpus, a failed
+    // embedding or no match above threshold all return zero passages, and the
+    // answer is simply ungrounded.
+    const { passages, reason } = await retrieveContext(name);
+
+    const answer = await askAstronomy(name, passages);
 
     // Archive here rather than in a second call from the browser: one round
     // trip, and the answer is stored exactly as it was generated.
@@ -113,7 +119,21 @@ app.post(
       archiveError = "This answer could not be saved to your archive.";
     }
 
-    res.json({ answer, archiveError });
+    res.json({
+      answer,
+      archiveError,
+      // The full passage text stays server-side; the client needs only enough
+      // to attribute and link the claim.
+      sources: passages.map(({ id, title, url, source, similarity }) => ({
+        id,
+        title,
+        url,
+        source,
+        similarity,
+      })),
+      grounded: passages.length > 0,
+      retrievalStatus: reason,
+    });
   })
 );
 
