@@ -24,7 +24,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 
 HERE = Path(__file__).parent
-DATASET = HERE / "stars.csv"
+# The extended set adds real giants and subgiants and widens the red dwarf and
+# main sequence classes with catalogued stars. Falls back to the original if it
+# has not been built yet (see build_dataset.py).
+DATASET = HERE / "stars_extended.csv"
+if not DATASET.exists():
+    DATASET = HERE / "stars.csv"
 OUTPUT = HERE.parent / "backend" / "models" / "star_model.json"
 
 # The dataset spells the same colour a dozen ways ("Blue white", "Blue-White",
@@ -92,6 +97,16 @@ CLASSES = [
         "id": 5,
         "label": "Hypergiant",
         "description": "The rarest and most luminous stars known, shedding mass at enormous rates.",
+    },
+    {
+        "id": 6,
+        "label": "Giant",
+        "description": "An evolved star that has left the main sequence and swollen, tens of times the Sun's radius.",
+    },
+    {
+        "id": 7,
+        "label": "Subgiant",
+        "description": "A star just beginning to evolve off the main sequence, brighter and larger than a dwarf of the same colour.",
     },
 ]
 
@@ -242,7 +257,7 @@ def main():
         "color_encoding": COLOR_ENCODING,
         "color_aliases": COLOR_ALIASES,
         "spectral_encoding": SPECTRAL_ENCODING,
-        "classes": CLASSES,
+        "classes": [c for c in CLASSES if c["id"] in set(targets.unique().tolist())],
         # The catalogue the model learnt from, kept as plottable points so the
         # UI can show a Hertzsprung-Russell diagram of the same data the
         # classifier was trained on. Rounded to keep the payload small; the

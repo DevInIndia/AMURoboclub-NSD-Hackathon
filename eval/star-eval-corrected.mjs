@@ -143,6 +143,25 @@ const LITERATURE = [
 
 const gaiaStars = JSON.parse(readFileSync(join(here, "data/stars-raw.json"), "utf-8"));
 
+/**
+ * Stars used to train the model, excluded here.
+ *
+ * Without this the evaluation would sample the same catalogue the training set
+ * was drawn from and score the model partly on its own training data. The
+ * training script records the names for exactly this purpose.
+ */
+const trainingNames = (() => {
+  try {
+    return new Set(
+      JSON.parse(readFileSync(join(here, "../AI-ML/training_star_names.json"), "utf-8"))
+    );
+  } catch {
+    return new Set();
+  }
+})();
+console.log(`Excluding ${trainingNames.size} stars used in training
+`);
+
 function seededPick(items, count, seed = 11) {
   let state = seed;
   const random = () => {
@@ -157,12 +176,36 @@ function seededPick(items, count, seed = 11) {
   return copy.slice(0, count);
 }
 
+/**
+ * Radius windows per class, from stellar structure.
+ *
+ * Applied identically to the training set. Their purpose is to drop rows where
+ * Gaia's catalogued radius contradicts SIMBAD's spectroscopic label -- a star
+ * labelled main sequence but measured at 9 solar radii is either a stale label
+ * or a failed fit, and scoring the model against it measures catalogue
+ * disagreement rather than the classifier. Set CONSISTENT=0 to include them.
+ */
+const CONSISTENT_RADIUS = {
+  "Main Sequence": [0.4, 4.0],
+  "Red Dwarf": [0.08, 0.7],
+  "Giant (unmapped)": [4.0, 80.0],
+  "Subgiant (unmapped)": [1.3, 6.0],
+};
+
+const REQUIRE_CONSISTENT = process.env.CONSISTENT !== "0";
+
 const fromGaia = (truth, count) =>
   seededPick(
     gaiaStars.filter((s) => {
       if (s.truth !== truth) return false;
+      if (trainingNames.has(s.name)) return false; // held out
       const radius = s.radiusFlame ?? s.radiusGspphot;
-      return s.teff && radius && s.absMagG !== null;
+      if (!s.teff || !radius || s.absMagG === null) return false;
+      if (REQUIRE_CONSISTENT && CONSISTENT_RADIUS[truth]) {
+        const [lo, hi] = CONSISTENT_RADIUS[truth];
+        if (radius < lo || radius > hi) return false;
+      }
+      return true;
     }),
     count
   ).map((s) => {
@@ -170,7 +213,7 @@ const fromGaia = (truth, count) =>
     const lum = luminosity(radius, s.teff);
     return {
       name: s.name,
-      truth,
+      truth: truth.replace(" (unmapped)", ""),
       input: {
         temperature: s.teff,
         luminosity: lum,
@@ -185,9 +228,11 @@ const fromGaia = (truth, count) =>
 // ---- Assemble and run --------------------------------------------------------
 
 const sample = [
-  ...fromGaia("Main Sequence", 32),
-  ...fromGaia("Red Dwarf", 24),
-  ...seededPick(whiteDwarfs, 26),
+  ...fromGaia("Main Sequence", 22),
+  ...fromGaia("Red Dwarf", 16),
+  ...fromGaia("Giant (unmapped)", 18),
+  ...fromGaia("Subgiant (unmapped)", 18),
+  ...seededPick(whiteDwarfs, 18),
   ...LITERATURE,
 ];
 
@@ -212,7 +257,7 @@ console.log("=".repeat(74));
 console.log(`OVERALL: ${correct}/${results.length} correct (${((correct / results.length) * 100).toFixed(1)}%)`);
 console.log("=".repeat(74));
 
-const CLASSES = ["Main Sequence", "Red Dwarf", "White Dwarf", "Supergiant", "Hypergiant", "Brown Dwarf"];
+const CLASSES = ["Main Sequence", "Red Dwarf", "White Dwarf", "Supergiant", "Hypergiant", "Brown Dwarf", "Giant", "Subgiant"];
 
 console.log("\nPer-class recall:");
 console.log("  truth              n   correct  recall   confusions");
