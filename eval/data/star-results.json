@@ -1,0 +1,1702 @@
+[
+ {
+  "name": "TYC  174-876-1",
+  "spType": "A0VSrSi",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 8862.681,
+   "luminosity": 23.91341589317764,
+   "radius": 2.0741646,
+   "absoluteMagnitude": 1.1496,
+   "color": "White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "CD-38  4128",
+  "spType": "B1V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 17490.535,
+   "luminosity": 84.45914967756627,
+   "radius": 1.000851880377113,
+   "absoluteMagnitude": -3.6348,
+   "color": "Blue-White",
+   "spectralClass": "B"
+  }
+ },
+ {
+  "name": "CGG* NGP  32",
+  "spType": "G2VFe-0.7CH-0.5",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5889.7197,
+   "luminosity": 1.4394065026338443,
+   "radius": 1.1522723,
+   "absoluteMagnitude": 3.894,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "2MASS J19361000+3829417",
+  "spType": "G0.5V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6099.494,
+   "luminosity": 2.852637853715063,
+   "radius": 1.5124755,
+   "absoluteMagnitude": 4.5417,
+   "color": "Yellowish White",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "2MASS J20321976+4144469",
+  "spType": "O9.5V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 0.9,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 7151.7617,
+   "luminosity": 6.994693345003968,
+   "radius": 1.722705,
+   "absoluteMagnitude": 2.6168,
+   "color": "Yellowish White",
+   "spectralClass": "O"
+  }
+ },
+ {
+  "name": "2MASS J19050780+4536109",
+  "spType": "F5V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6266.9287,
+   "luminosity": 4.598609061630322,
+   "radius": 1.8190992,
+   "absoluteMagnitude": 3.0322,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "2MASS J19195112+5208356",
+  "spType": "F9V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6187.9844,
+   "luminosity": 1.4384891464083691,
+   "radius": 1.0435362,
+   "absoluteMagnitude": 4.4411,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "GSC 00154-00121",
+  "spType": "B9V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 7867.873,
+   "luminosity": 8.284990407206376,
+   "radius": 1.5491161,
+   "absoluteMagnitude": 2.2866,
+   "color": "White",
+   "spectralClass": "B"
+  }
+ },
+ {
+  "name": "TYC 3139-1096-1",
+  "spType": "G6V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 4790.058,
+   "luminosity": 17.763040732200718,
+   "radius": 6.1196947,
+   "absoluteMagnitude": 1.5397,
+   "color": "Pale Yellow Orange",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "2MASS J19220809+3727269",
+  "spType": "G8V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 4922.4854,
+   "luminosity": 5.781986041979391,
+   "radius": 3.306148,
+   "absoluteMagnitude": 2.865,
+   "color": "Pale Yellow Orange",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "TYC 3684-422-1",
+  "spType": "A9VSrSiEu",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 7198.4307,
+   "luminosity": 18.90081356908138,
+   "radius": 2.795228,
+   "absoluteMagnitude": 1.24,
+   "color": "Yellowish White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "2MASS J18504476+4746262",
+  "spType": "F3V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6546.1025,
+   "luminosity": 5.307583230610241,
+   "radius": 1.7911644,
+   "absoluteMagnitude": 2.8618,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "2MASS J19293869+3857412",
+  "spType": "F7V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6410.602,
+   "luminosity": 2.663710722383341,
+   "radius": 1.3231179,
+   "absoluteMagnitude": 3.524,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "2MASS J18592980+4739155",
+  "spType": "G0V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5724.209,
+   "luminosity": 2.2081507218413834,
+   "radius": 1.5109011,
+   "absoluteMagnitude": 3.8941,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "2MASS J19333994+3743372",
+  "spType": "K1V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 0.8667,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 4843.8896,
+   "luminosity": 0.24772638755036175,
+   "radius": 0.70672476,
+   "absoluteMagnitude": 6.1857,
+   "color": "Pale Yellow Orange",
+   "spectralClass": "K"
+  }
+ },
+ {
+  "name": "2MASS J20075407+4622132",
+  "spType": "K0V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5262.558,
+   "luminosity": 10.513836085638525,
+   "radius": 3.9006722,
+   "absoluteMagnitude": 1.9081,
+   "color": "Yellowish",
+   "spectralClass": "K"
+  }
+ },
+ {
+  "name": "LS   85",
+  "spType": "O7.5V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 0.9,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 19942.098,
+   "luminosity": 783.8988516021775,
+   "radius": 2.345529862748885,
+   "absoluteMagnitude": -1.645,
+   "color": "Blue-White",
+   "spectralClass": "O"
+  }
+ },
+ {
+  "name": "HD 184505",
+  "spType": "G8V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 0.8167,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5559.6025,
+   "luminosity": 116.68236301043754,
+   "radius": 11.643077,
+   "absoluteMagnitude": 0.1136,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "Cl* NGC 3114     AR      99",
+  "spType": "G9V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5257.923,
+   "luminosity": 6.628894493516259,
+   "radius": 3.1027355,
+   "absoluteMagnitude": 2.7319,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "UCAC4 691-061766",
+  "spType": "G0V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5685.14,
+   "luminosity": 5.498412054920579,
+   "radius": 2.4170685,
+   "absoluteMagnitude": 4.0604,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "HD 207017",
+  "spType": "B2V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 19436.373,
+   "luminosity": 131.01186868038002,
+   "radius": 1.0094330398706315,
+   "absoluteMagnitude": -2.3546,
+   "color": "Blue-White",
+   "spectralClass": "B"
+  }
+ },
+ {
+  "name": "CoRoT 102649640",
+  "spType": "F6V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5894.1606,
+   "luminosity": 4.685542291746248,
+   "radius": 2.075815,
+   "absoluteMagnitude": 3.1142,
+   "color": "Yellowish",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "BD-01  1909",
+  "spType": "K5V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 0.9333,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5250.297,
+   "luminosity": 73.49295314183802,
+   "radius": 10.361145,
+   "absoluteMagnitude": 0.0347,
+   "color": "Yellowish",
+   "spectralClass": "K"
+  }
+ },
+ {
+  "name": "2MASS J19261570+4940542",
+  "spType": "F6V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6474.818,
+   "luminosity": 3.962322230404624,
+   "radius": 1.5818759,
+   "absoluteMagnitude": 3.1689,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "ATO J101.8726-02.6969",
+  "spType": "F0V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6707.254,
+   "luminosity": 8.963517037541305,
+   "radius": 2.2171872,
+   "absoluteMagnitude": 2.0029,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "TYC 3543-686-1",
+  "spType": "F1V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 7289.4375,
+   "luminosity": 18.265897763741904,
+   "radius": 2.6796935,
+   "absoluteMagnitude": 1.2852,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "TYC 4047-154-1",
+  "spType": "B5V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 11639.074,
+   "luminosity": 148.2139092165441,
+   "radius": 2.9940584,
+   "absoluteMagnitude": -0.0759,
+   "color": "Blue-White",
+   "spectralClass": "B"
+  }
+ },
+ {
+  "name": "2MASS J19190497+4431501",
+  "spType": "G2V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5662.7134,
+   "luminosity": 2.1433680355644875,
+   "radius": 1.5210793,
+   "absoluteMagnitude": 3.9293,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "2MASS J19571959+4504118",
+  "spType": "F5V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6260.0107,
+   "luminosity": 3.8247569531060197,
+   "radius": 1.6626637,
+   "absoluteMagnitude": 3.2346,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "2MASS J19595424+4639525",
+  "spType": "G5V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5135.3423,
+   "luminosity": 2.9470492804273047,
+   "radius": 2.1687403,
+   "absoluteMagnitude": 3.6735,
+   "color": "Pale Yellow Orange",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "UCAC4 655-074043",
+  "spType": "F8V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5879.8984,
+   "luminosity": 1.1841845279711012,
+   "radius": 1.048631,
+   "absoluteMagnitude": 4.4761,
+   "color": "Yellowish",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "2MASS J19143942+4355546",
+  "spType": "G2V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5587.2256,
+   "luminosity": 2.5169305451308994,
+   "radius": 1.6931516,
+   "absoluteMagnitude": 3.7189,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "2MASS J02220201+5715476",
+  "spType": "K6.1V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 0.75,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3851.105,
+   "luminosity": 0.1529998514202789,
+   "radius": 0.8786733,
+   "absoluteMagnitude": 7.9488,
+   "color": "Orange",
+   "spectralClass": "K"
+  }
+ },
+ {
+  "name": "2MASS J19140649+4233069",
+  "spType": "F3V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6463.982,
+   "luminosity": 5.79906380473475,
+   "radius": 1.920133,
+   "absoluteMagnitude": 2.771,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "2MASS J19363040+4957348",
+  "spType": "F6V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5993.7485,
+   "luminosity": 2.085523088656568,
+   "radius": 1.3392545,
+   "absoluteMagnitude": 3.9568,
+   "color": "Yellowish",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "2MASS J19350561+4912341",
+  "spType": "F2V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6595.3623,
+   "luminosity": 3.315802910296938,
+   "radius": 1.3946643,
+   "absoluteMagnitude": 3.3514,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "GSC 03712-01863",
+  "spType": "A0V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 9504.194,
+   "luminosity": 24.141539934832913,
+   "radius": 1.8121934,
+   "absoluteMagnitude": 1.3937,
+   "color": "White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "2MASS J19321855+4453166",
+  "spType": "G2V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5510.523,
+   "luminosity": 1.207609039967922,
+   "radius": 1.2056748,
+   "absoluteMagnitude": 4.4335,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "UCAC4 685-071763",
+  "spType": "G4V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5748.6274,
+   "luminosity": 3.0695021876603867,
+   "radius": 1.7662749,
+   "absoluteMagnitude": 3.5363,
+   "color": "Yellowish",
+   "spectralClass": "G"
+  }
+ },
+ {
+  "name": "SDSS J083453.81-003030.1",
+  "spType": "K3V",
+  "truth": "Main Sequence",
+  "predicted": "Main Sequence",
+  "confidence": 0.9667,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 4773.8765,
+   "luminosity": 0.2750388583953219,
+   "radius": 0.76666796,
+   "absoluteMagnitude": 6.248,
+   "color": "Pale Yellow Orange",
+   "spectralClass": "K"
+  }
+ },
+ {
+  "name": "2MASS J22340747-0047461",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.4667,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3564.5881,
+   "luminosity": 0.15172966353693107,
+   "radius": 1.0213372845684154,
+   "absoluteMagnitude": 9.0064,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00255887-0047042",
+  "spType": "M2V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.4667,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3551.9358,
+   "luminosity": 0.14820506182776885,
+   "radius": 1.016608995778558,
+   "absoluteMagnitude": 9.5669,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00111566+0056263",
+  "spType": "M2V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.4958,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3386.169,
+   "luminosity": 0.12131190219210795,
+   "radius": 1.012015332197217,
+   "absoluteMagnitude": 10.3119,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00182971+0025413",
+  "spType": "M1V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.4833,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3687.9688,
+   "luminosity": 0.17199858332467907,
+   "radius": 1.015875772889244,
+   "absoluteMagnitude": 8.9775,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00461611+0017379",
+  "spType": "M1V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.5116,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3505.731,
+   "luminosity": 0.13887237350499115,
+   "radius": 1.0101907698030252,
+   "absoluteMagnitude": 9.3501,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J13165736+5158456",
+  "spType": "M2V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.6167,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3625.4382,
+   "luminosity": 0.10503960429179744,
+   "radius": 0.82150114,
+   "absoluteMagnitude": 7.7702,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J21405458+0005028",
+  "spType": "M1V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.6783,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3592.2793,
+   "luminosity": 0.07186436541142155,
+   "radius": 0.69210064,
+   "absoluteMagnitude": 8.9571,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J15315855+4050027",
+  "spType": "M1V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.4833,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3676.5918,
+   "luminosity": 0.1713731305949052,
+   "radius": 1.02031243949517,
+   "absoluteMagnitude": 9.1006,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J01151611-0046104",
+  "spType": "M1V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.5116,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3473.1177,
+   "luminosity": 0.1317580430382914,
+   "radius": 1.0025411558602295,
+   "absoluteMagnitude": 9.9518,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00253090-0047222",
+  "spType": "M2V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.5125,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3325.2065,
+   "luminosity": 0.11416893264063398,
+   "radius": 1.0180975063791755,
+   "absoluteMagnitude": 10.6109,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "SDSS J002218.24+000441.5",
+  "spType": "M2V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.4833,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3630.0127,
+   "luminosity": 0.157593544430907,
+   "radius": 1.0037037981425878,
+   "absoluteMagnitude": 8.8518,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J10345699+4319075",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.65,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 4270.5693,
+   "luminosity": 0.12918825320305594,
+   "radius": 0.6565875,
+   "absoluteMagnitude": 6.8295,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00492977-0034200",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.55,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3796.7456,
+   "luminosity": 0.10814325346302298,
+   "radius": 0.7600276,
+   "absoluteMagnitude": 8.2368,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J11200462+1205207",
+  "spType": "M2V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.495,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3538.0793,
+   "luminosity": 0.14392700645092701,
+   "radius": 1.0096914200615523,
+   "absoluteMagnitude": 9.7472,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J05334969-0015587",
+  "spType": "M3V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.4958,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3374.176,
+   "luminosity": 0.12022343399584803,
+   "radius": 1.0146394526567928,
+   "absoluteMagnitude": 10.0477,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00461337-0025298",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.5833,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3869.9714,
+   "luminosity": 0.10898037860017522,
+   "radius": 0.73436385,
+   "absoluteMagnitude": 8.0503,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "SDSS J025100.55+004649.8",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.5667,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3562.1252,
+   "luminosity": 0.15113023261089684,
+   "radius": 1.0207278411790153,
+   "absoluteMagnitude": 7.9448,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00395967-0035520",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.5625,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3834.4749,
+   "luminosity": 0.06941631999371137,
+   "radius": 0.5969963,
+   "absoluteMagnitude": 7.5416,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00345552+0114573",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.6333,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3883.748,
+   "luminosity": 0.11186410815997432,
+   "radius": 0.73874736,
+   "absoluteMagnitude": 7.976,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J14173394+0552016",
+  "spType": "M3V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.5167,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3318.9475,
+   "luminosity": 0.11318409135226482,
+   "radius": 1.0175237943883932,
+   "absoluteMagnitude": 10.6865,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J01460631+1406469",
+  "spType": "M1V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.8783,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3482.146,
+   "luminosity": 0.07029886050648214,
+   "radius": 0.7285055,
+   "absoluteMagnitude": 9.6421,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J16074797+2321573",
+  "spType": "M2V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.5667,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3767.7244,
+   "luminosity": 0.19563128666040142,
+   "radius": 1.0380387,
+   "absoluteMagnitude": 8.3891,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J02583926+0022561",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.4458,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3823.7732,
+   "luminosity": 0.09116821092866631,
+   "radius": 0.68800265,
+   "absoluteMagnitude": 8.667,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00362444+0112198",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.7125,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3840.424,
+   "luminosity": 0.05604868916990681,
+   "radius": 0.5347823,
+   "absoluteMagnitude": 9.114,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J15194052+3951458",
+  "spType": "M1V",
+  "truth": "Red Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.4458,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3894.5771,
+   "luminosity": 0.07547643732173544,
+   "radius": 0.60344505,
+   "absoluteMagnitude": 8.2974,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J15491203+2316253",
+  "spType": "M0V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.5833,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 4186.4966,
+   "luminosity": 0.10325621842381842,
+   "radius": 0.6108144,
+   "absoluteMagnitude": 7.2743,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J16072913+0816276",
+  "spType": "M1V",
+  "truth": "Red Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.5167,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3739.6003,
+   "luminosity": 0.17637505555114455,
+   "radius": 1.0005086661105997,
+   "absoluteMagnitude": 9.1453,
+   "color": "Orange",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "GALEX J194933.4-504625",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.6667,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 17364.268,
+   "luminosity": 0.32528429394620473,
+   "radius": 0.06301896,
+   "absoluteMagnitude": 0.3756,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "Ton  191",
+  "spType": "DA1",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.8833,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 4098.1216,
+   "luminosity": 0.22322886257291635,
+   "radius": 0.9372558,
+   "absoluteMagnitude": 6.5089,
+   "color": "Orange",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J091539.6+143855",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "White Dwarf",
+  "confidence": 0.5,
+  "correct": true,
+  "extrapolated": false,
+  "input": {
+   "temperature": 9999.144,
+   "luminosity": 0.05722801315638792,
+   "radius": 0.0797134,
+   "absoluteMagnitude": 2.6817,
+   "color": "White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "UCAC4 681-028707",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 9235.36,
+   "luminosity": 25.102153733833728,
+   "radius": 1.9570435,
+   "absoluteMagnitude": 1.0313,
+   "color": "White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "PB  8661",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15209.305,
+   "luminosity": 50.359007382395276,
+   "radius": 1.0220508111223752,
+   "absoluteMagnitude": 1.158,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J120329.3+271548",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15287.372,
+   "luminosity": 57.347972443691475,
+   "radius": 1.0795580776238687,
+   "absoluteMagnitude": 1.0973,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J151215.7+065156",
+  "spType": "DO",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.6667,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 19994.98,
+   "luminosity": 0.729345384718677,
+   "radius": 0.07116678,
+   "absoluteMagnitude": -0.2148,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J091730.8+182309",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.5167,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 11314.183,
+   "luminosity": 0.07542957264011911,
+   "radius": 0.07147877,
+   "absoluteMagnitude": 1.9819,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J205617.9+105928",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.65,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 16404.39,
+   "luminosity": 0.26905589894028603,
+   "radius": 0.06421755,
+   "absoluteMagnitude": 0.8463,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "CSO  907",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15486.451,
+   "luminosity": 60.72090596476719,
+   "radius": 1.08247521359087,
+   "absoluteMagnitude": 1.0862,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J152943.0+183722",
+  "spType": "DAO",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15398.995,
+   "luminosity": 60.23091567862802,
+   "radius": 1.0903793592609012,
+   "absoluteMagnitude": 1.1065,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J151402.5+005245",
+  "spType": "DA1",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15040.649,
+   "luminosity": 50.00715105388149,
+   "radius": 1.0414431042748828,
+   "absoluteMagnitude": 1.1917,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J073425.8-612647",
+  "spType": "DB:",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 10476.253,
+   "luminosity": 12.204864678095811,
+   "radius": 1.0604914538878778,
+   "absoluteMagnitude": 2.2205,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J225020.5+274935",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.65,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15582.203,
+   "luminosity": 0.2285490507449218,
+   "radius": 0.0655971,
+   "absoluteMagnitude": 1.0054,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "2QZ J133137.0+001128",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15016.724,
+   "luminosity": 54.87689198302607,
+   "radius": 1.0944527093735006,
+   "absoluteMagnitude": 1.2112,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "SDSS J152810.28+252458.3",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 12381.301,
+   "luminosity": 23.983522976195463,
+   "radius": 1.0643306528539465,
+   "absoluteMagnitude": 1.3989,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "SDSS J073613.33+180103.2",
+  "spType": "DA:",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.6333,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 9999.066,
+   "luminosity": 0.11279158089834558,
+   "radius": 0.11191083,
+   "absoluteMagnitude": 2.4758,
+   "color": "White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J040403.8-595329",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.6333,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15527.603,
+   "luminosity": 0.13230706466528375,
+   "radius": 0.050261486,
+   "absoluteMagnitude": 1.0422,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "SDSS J104921.98+102343.7",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.6667,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 17944.33,
+   "luminosity": 0.33573633508745054,
+   "radius": 0.059951123,
+   "absoluteMagnitude": 0.4728,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J012459.7+390803",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 9822.749,
+   "luminosity": 10.974575721173002,
+   "radius": 1.1438798799679677,
+   "absoluteMagnitude": 2.854,
+   "color": "White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "GALEX J113643.4+475848",
+  "spType": "DA",
+  "truth": "White Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 10896.769,
+   "luminosity": 15.92996250046914,
+   "radius": 1.1198620636005276,
+   "absoluteMagnitude": 1.9342,
+   "color": "Blue-White",
+   "spectralClass": "A"
+  }
+ },
+ {
+  "name": "SOI 842",
+  "spType": "F2Ia",
+  "truth": "Supergiant",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6354.045,
+   "luminosity": 6.061298003710662,
+   "radius": 2.0315845,
+   "absoluteMagnitude": 2.6759,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "HD 146105",
+  "spType": "B7/9(I)",
+  "truth": "Supergiant",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 7663.2925,
+   "luminosity": 27.20920275838944,
+   "radius": 2.959237,
+   "absoluteMagnitude": 0.2964,
+   "color": "White",
+   "spectralClass": "B"
+  }
+ },
+ {
+  "name": "2MASS J05101175-6854045",
+  "spType": "O6Ib",
+  "truth": "Supergiant",
+  "predicted": "Main Sequence",
+  "confidence": 0.9,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 5914.9873,
+   "luminosity": 2.069636674338912,
+   "radius": 1.3699101,
+   "absoluteMagnitude": 3.8841,
+   "color": "Yellowish",
+   "spectralClass": "O"
+  }
+ },
+ {
+  "name": "HD  51507",
+  "spType": "B5/7Ib",
+  "truth": "Supergiant",
+  "predicted": "Main Sequence",
+  "confidence": 1,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 15523.171,
+   "luminosity": 1855.1053913061553,
+   "radius": 5.9549217,
+   "absoluteMagnitude": -2.6044,
+   "color": "Blue-White",
+   "spectralClass": "B"
+  }
+ },
+ {
+  "name": "HD 240261",
+  "spType": "F1Iab",
+  "truth": "Supergiant",
+  "predicted": "Main Sequence",
+  "confidence": 0.75,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 6734.853,
+   "luminosity": 672.1116735139948,
+   "radius": 19.0422,
+   "absoluteMagnitude": -2.2221,
+   "color": "Yellowish White",
+   "spectralClass": "F"
+  }
+ },
+ {
+  "name": "SK  143",
+  "spType": "O9.7Ib",
+  "truth": "Supergiant",
+  "predicted": "Main Sequence",
+  "confidence": 0.9,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 19827.977,
+   "luminosity": 1081.9225142712012,
+   "radius": 2.7873654405333803,
+   "absoluteMagnitude": -1.7911,
+   "color": "Blue-White",
+   "spectralClass": "O"
+  }
+ },
+ {
+  "name": "LP   92-83",
+  "spType": "L3.0",
+  "truth": "Brown Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.945,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3441.847,
+   "luminosity": 0.00791638543879711,
+   "radius": 0.25022632,
+   "absoluteMagnitude": 10.6904,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J15055382+6105493",
+  "spType": "L0",
+  "truth": "Brown Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.4167,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 2641.4192,
+   "luminosity": 4.314422965549021,
+   "radius": 9.918348036878793,
+   "absoluteMagnitude": 13.535,
+   "color": "Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J03452871+3204183",
+  "spType": "L0.0",
+  "truth": "Brown Dwarf",
+  "predicted": "Main Sequence",
+  "confidence": 0.6667,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3600.5261,
+   "luminosity": 0.837374248188097,
+   "radius": 2.351692414858348,
+   "absoluteMagnitude": 7.2825,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J04234712-0803060",
+  "spType": "L0",
+  "truth": "Brown Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.9292,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3360.096,
+   "luminosity": 0.013093411393537242,
+   "radius": 0.33765694,
+   "absoluteMagnitude": 10.1626,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J00501771+1012528",
+  "spType": "L2.0",
+  "truth": "Brown Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.7625,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3621.108,
+   "luminosity": 0.06353998165281688,
+   "radius": 0.6404618,
+   "absoluteMagnitude": 7.9502,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ },
+ {
+  "name": "2MASS J03444856+3157276",
+  "spType": "L0.0",
+  "truth": "Brown Dwarf",
+  "predicted": "Red Dwarf",
+  "confidence": 0.4833,
+  "correct": false,
+  "extrapolated": false,
+  "input": {
+   "temperature": 3205.027,
+   "luminosity": 0.979538232735384,
+   "radius": 3.209962477272424,
+   "absoluteMagnitude": 10.2315,
+   "color": "Orange-Red",
+   "spectralClass": "M"
+  }
+ }
+]
