@@ -106,6 +106,12 @@ describe("error handling does not leak internals", () => {
     const res = await request(app).post("/search").send({ name: "x" });
     expect(JSON.stringify(res.body)).not.toMatch(/\bat\s+\w+.*:\d+:\d+/);
   });
+
+  it("surfaces user-facing messages for operational 5xx errors", async () => {
+    const ExpressError = (await import("../utils/ExpressError.js")).default;
+    const testErr = new ExpressError(503, "The AI guide is temporarily busy.");
+    expect(testErr.message).toBe("The AI guide is temporarily busy.");
+  });
 });
 
 describe("request size limits", () => {

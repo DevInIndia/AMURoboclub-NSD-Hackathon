@@ -173,7 +173,9 @@ app.use((err, req, res, next) => {
   // file paths and driver internals, so they stay in the log.
   if (statusCode >= 500) {
     console.error(err);
-    return res.status(statusCode).json({ error: "Something went wrong." });
+    const clientMessage =
+      err instanceof ExpressError ? err.message : "Something went wrong.";
+    return res.status(statusCode).json({ error: clientMessage });
   }
 
   res.status(statusCode).json({ error: err.message || "Request failed." });

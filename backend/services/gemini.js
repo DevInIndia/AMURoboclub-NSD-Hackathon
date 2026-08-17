@@ -6,6 +6,8 @@ import {
 } from "../schemas/starAnalysis.js";
 import { findImpossibleValues } from "./guardrails.js";
 
+import ExpressError from "../utils/ExpressError.js";
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // Google retires model versions, and the app broke once already because it was
 // pinned to gemini-2.0-flash-exp. If answers start failing with a 404, list the
@@ -39,7 +41,15 @@ async function generate(request, generationConfig) {
       );
       return result.response.text();
     } catch (error) {
-      if (attempt >= MAX_ATTEMPTS || !RETRY_STATUSES.has(error.status)) throw error;
+      if (attempt >= MAX_ATTEMPTS || !RETRY_STATUSES.has(error.status)) {
+        if (error.status === 503 || error.status === 429) {
+          throw new ExpressError(
+            503,
+            "The space AI service is temporarily busy. Please try your question again in a moment."
+          );
+        }
+        throw error;
+      }
       console.warn(
         `Gemini returned ${error.status}, retrying (${attempt}/${MAX_ATTEMPTS - 1})`
       );
