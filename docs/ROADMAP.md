@@ -99,6 +99,11 @@ lines. Revisit if the plot grows interactive brushing or zoom.
 
 ## Phase 4 — Cosmic RAG with pgvector
 
+**Status: done.** `db/schema-vector.sql`, `services/embeddings.js`,
+`db/knowledge.js`, `ingest/`, and source citations on the answer. 42 passages
+ingested from constants and APOD; retrieval measured at 0.73–0.77 similarity
+for on-topic questions and correctly returning nothing for off-topic ones.
+
 Real value for a Q&A tool, and the largest single chunk of work here.
 
 **One correction:** the blueprint claims this yields "zero hallucinations".
@@ -193,7 +198,7 @@ visitors who open that page pay for it.
 | 1 | Zod/Gemini structured output + guards | Low | Low | **Done** |
 | 2 | Exoplanet ESI + planet class | Medium | Low | **Done** |
 | 3 | H-R diagram | Medium | Low | **Done** |
-| 4 | pgvector RAG | High | Medium | Prove narrow, then scale |
+| 4 | pgvector RAG | High | Medium | **Done** |
 | 5 | NeoWs + NOAA space weather | Low | Low | **Done** |
 | 6 | Galaxy CV + sidecar | High | High | Only together, and only if wanted |
 | 7 | Three.js / Cesium | High | Medium | Last, and code-split |

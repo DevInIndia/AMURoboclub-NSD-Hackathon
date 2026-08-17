@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import StarField from "../components/StarField";
 import Spinner from "../components/Spinner";
 import AdvancedSearchButton from "../components/AdvancedSearchButton";
+import SourceList from "../components/SourceList";
 
 const parseMarkdown = (markdown) => DOMPurify.sanitize(marked.parse(markdown || ""));
 
@@ -30,6 +31,7 @@ function Home() {
 
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(null);
+  const [sources, setSources] = useState([]);
   const [error, setError] = useState(null);
   const [notice, setNotice] = useState(null);
   const [isAnswering, setIsAnswering] = useState(false);
@@ -46,6 +48,7 @@ function Home() {
     setError(null);
     setNotice(null);
     setAnswer(null);
+    setSources([]);
 
     try {
       if (pendingImage) {
@@ -59,6 +62,7 @@ function Home() {
         setPendingImage(null);
         setQuestion("");
         setAnswer(response);
+        setSources([]);
 
         try {
           await api.savePrompt({ text: prompt, response });
@@ -68,8 +72,9 @@ function Home() {
         }
       } else {
         // The backend answers and archives in one call.
-        const { answer: response, archiveError } = await api.ask(question);
+        const { answer: response, archiveError, sources: cited } = await api.ask(question);
         setAnswer(response);
+        setSources(cited ?? []);
         if (archiveError) setNotice(archiveError);
       }
     } catch (err) {
@@ -291,10 +296,13 @@ function Home() {
                       </p>
                     </div>
                   ) : (
-                    <div
-                      className="prose prose-invert max-w-none"
-                      dangerouslySetInnerHTML={{ __html: parseMarkdown(answer) }}
-                    />
+                    <div className="space-y-5">
+                      <div
+                        className="prose prose-invert max-w-none"
+                        dangerouslySetInnerHTML={{ __html: parseMarkdown(answer) }}
+                      />
+                      <SourceList sources={sources} />
+                    </div>
                   )}
                 </section>
               )}

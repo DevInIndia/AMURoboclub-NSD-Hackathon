@@ -8,6 +8,7 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "db:migrate": "node db/migrate.js",
+    "ingest": "node ingest/index.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -20,6 +21,7 @@
     "express": "^4.19.2",
     "express-oauth2-jwt-bearer": "^1.9.2",
     "express-rate-limit": "^8.6.2",
+    "fast-xml-parser": "^5.11.0",
     "multer": "^2.0.1",
     "pg": "^8.23.0",
     "zod": "^4.4.3"
