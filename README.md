@@ -2,6 +2,11 @@
 
 An astronomy companion web application providing RAG-grounded space Q&A, stellar classification, exoplanet thermodynamics, and real-time space weather telemetry.
 
+**Live:** https://celestial-chatbot.netlify.app  ·  **API:** https://celestial-chatbot-api.onrender.com
+
+> Hosted on free tiers. The API sleeps after 15 minutes idle, so the first
+> request following a quiet period can take 30-60 seconds to answer.
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -18,6 +23,7 @@ An astronomy companion web application providing RAG-grounded space Q&A, stellar
 - [Authentication & Authorization](#authentication--authorization)
 - [Data Model](#data-model)
 - [Security & Risk Controls](#security--risk-controls)
+- [Deployment](#deployment)
 - [Known Limitations](#known-limitations)
 - [License](#license)
 
@@ -135,7 +141,7 @@ sequenceDiagram
 | **Frontend** | React 18, Vite 5, TailwindCSS | Neumorphic UI, SPA Routing, Component Views |
 | **Frontend Graphics** | Native SVG | H-R Diagram, ESI Gauge, Habitable Zone Bar |
 | **Auth Provider** | Auth0 (`@auth0/auth0-react`) | Single Sign-On, User Identity, Access Tokens |
-| **Backend Gateway** | Node.js 18+, Express 4.19 | HTTP REST API, Security Middlewares |
+| **Backend Gateway** | Node.js 20+, Express 4.19 | HTTP REST API, Security Middlewares |
 | **Machine Learning** | scikit-learn (export) / Node.js (walk) | 60-tree Random Forest (`star_model.json`) |
 | **Vector Database** | PostgreSQL 16+ (Neon runs 18.x) + `pgvector 0.8.6` | User Archive, HNSW Vector Embeddings |
 | **AI / LLM Service** | Google Gemini Flash (`gemini-3.5-flash`) & `gemini-embedding-001` | RAG Answer Generation & Vectorization |
@@ -147,6 +153,7 @@ sequenceDiagram
 
 ```text
 AMURoboclub-NSD-Hackathon/
+├── .github/workflows/          # Scheduled ping that keeps the free API awake
 ├── AI-ML/                     # Python training code & scikit-learn model export
 │   ├── train_star_model.py    # Fits Random Forest & exports star_model.json
 │   ├── stars.csv              # 240-row catalogued star dataset
@@ -181,7 +188,7 @@ AMURoboclub-NSD-Hackathon/
 
 ## Prerequisites
 
-- **Node.js**: `v18.0.0` or higher
+- **Node.js**: `v20.0.0` or higher (both manifests declare `>=20 <25`)
 - **Docker**: Required for running PostgreSQL with `pgvector` locally
 - **Python**: `v3.9+` *(Optional: only needed if retraining the star classifier model)*
 - **Auth0 Account**: Free tenant with an configured Single Page Application and API
@@ -349,6 +356,20 @@ erDiagram
 - **IPv6 Subnet Rate Limiting**: `express-rate-limit` uses a custom IP key generator aggregating IPv6 requests to `/64` subnets, preventing IP rotation abuse.
 - **Prompt Size Caps**: Input questions are restricted to 500 characters and HTTP JSON request bodies are capped at 32 KB.
 - **Error Message Sanitization**: 500 Internal Server Errors sanitize raw exception messages to prevent leaking database hostnames, credentials, or internal stack traces.
+
+---
+
+## Deployment
+
+Three pieces deploy independently and all sit on free tiers: the static
+frontend on Netlify, the Node API on Render, and Postgres with `pgvector` on
+Neon. The API and database are colocated in Singapore, because a single request
+makes several round trips to the database.
+
+`render.yaml` and `netlify.toml` describe the two services; secrets are set in
+each dashboard rather than committed. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+covers the free-tier budgets, why Neon was chosen over Supabase and Aiven, the
+keep-alive window, and the Auth0 and CORS wiring that is easy to get wrong.
 
 ---
 
