@@ -10,6 +10,13 @@ services:
     rootDir: backend
     plan: free
 
+    # Must match the region the Neon project was created in. A single request
+    # makes several round trips to Postgres -- the vector search, the archive
+    # write, and the migration at boot -- so putting the API on another
+    # continent from the database is felt on every call. Render defaults to
+    # Oregon when this is omitted; the database is in ap-southeast-1.
+    region: singapore
+
     buildCommand: npm ci
     # Migrations run before the server starts, so a deploy that adds a table
     # cannot serve traffic against the old schema. Every statement is
