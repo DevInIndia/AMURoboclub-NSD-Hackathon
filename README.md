@@ -25,14 +25,14 @@ An astronomy companion web application providing RAG-grounded space Q&A, stellar
 
 ## Overview
 
-Celestial Chatbot is a full-stack astrophysics platform built for space exploration and observational astronomy queries. It allows users to ask space questions answered by Gemini Pro with RAG vector grounding, classify physical star parameters using a zero-Python in-memory Random Forest model, analyze exoplanet habitability via deterministic thermodynamic equations, track live space weather and Near-Earth Asteroids, and archive query history in PostgreSQL.
+Celestial Chatbot is a full-stack astrophysics platform built for space exploration and observational astronomy queries. It allows users to ask space questions answered by Gemini Flash with RAG vector grounding, classify physical star parameters using a zero-Python in-memory Random Forest model, analyze exoplanet habitability via deterministic thermodynamic equations, track live space weather and Near-Earth Asteroids, and archive query history in PostgreSQL.
 
 ---
 
 ## Key Features
 
-- **Cosmic Q&A (RAG Grounded)**: Answers free-text space questions using Gemini Pro, grounded by PostgreSQL `pgvector` HNSW similarity search over catalogued astronomical reference documents and NASA APOD data. Includes clickable source citation badges.
-- **Zero-Python Star Classifier**: Predicts star types (*Brown Dwarf, Red Dwarf, White Dwarf, Main Sequence, Supergiant, Hypergiant*) by walking a 60-tree Random Forest exported directly as JSON (`star_model.json`).
+- **Cosmic Q&A (RAG Grounded)**: Answers free-text space questions using Gemini Flash, grounded by PostgreSQL `pgvector` HNSW similarity search over catalogued astronomical reference documents and NASA APOD data. Includes clickable source citation badges.
+- **Zero-Python Star Classifier**: Predicts star types (*Brown Dwarf, Red Dwarf, White Dwarf, Main Sequence, Subgiant, Giant, Supergiant, Hypergiant*) by walking a 60-tree Random Forest exported directly as JSON (`star_model.json`).
 - **Interactive Hertzsprung-Russell (H-R) Diagram**: Plots analyzed stars on a native SVG logarithmic H-R diagram ($T_\text{eff}$ vs $L/L_\odot$) against 240 catalogued reference stars.
 - **Exoplanet ESI & Habitability Engine**: Calculates the Earth Similarity Index (ESI), Goldilocks Habitable Zone bounds (Kopparapu 2014), and planetary taxonomy from physical inputs ($R_\oplus, S_\oplus, T_\text{eff}$). Includes explicit runaway greenhouse caveats for Venus-like planets.
 - **Space Weather & Asteroid Radar**: Real-time telemetry displaying NOAA $Kp$-index geomagnetic storm sparklines, 24-hour solar flare forecasts, and NASA NeoWs Near-Earth Asteroid close approaches with single-flight request caching.
@@ -66,7 +66,7 @@ flowchart TB
     end
 
     subgraph LLM ["AI & Vector Services"]
-        GeminiPro["Google Gemini Pro (LLM)"]
+        GeminiFlash["Google Gemini Flash (LLM)"]
         GeminiEmbed["gemini-embedding-001 (768-dim)"]
     end
 
@@ -88,7 +88,7 @@ flowchart TB
     Guardrails -->|Walk star_model.json| RFEngine
     Guardrails -->|Physical Equations| ThermoEngine
     Guardrails -->|Vector Search| GeminiEmbed
-    Guardrails -->|Prompt & Context| GeminiPro
+    Guardrails -->|Prompt & Context| GeminiFlash
     Guardrails -->|Fetch Cached Data| CacheManager
 
     GeminiEmbed -->|<=> Cosine Distance| Postgres
@@ -111,7 +111,7 @@ sequenceDiagram
     participant Guard as Physics / Scope Guardrails
     participant Embed as Gemini Embeddings API
     participant PG as PostgreSQL (pgvector)
-    participant LLM as Gemini Pro API
+    participant LLM as Gemini Flash API
 
     Client->>Auth: POST /search (Bearer JWT + Question)
     Auth->>Auth: Verify RS256 JWT Token
@@ -137,8 +137,8 @@ sequenceDiagram
 | **Auth Provider** | Auth0 (`@auth0/auth0-react`) | Single Sign-On, User Identity, Access Tokens |
 | **Backend Gateway** | Node.js 18+, Express 4.19 | HTTP REST API, Security Middlewares |
 | **Machine Learning** | scikit-learn (export) / Node.js (walk) | 60-tree Random Forest (`star_model.json`) |
-| **Vector Database** | PostgreSQL 16 + `pgvector 0.8.6` | User Archive, HNSW Vector Embeddings |
-| **AI / LLM Service** | Google Gemini Pro & `gemini-embedding-001` | RAG Answer Generation & Vectorization |
+| **Vector Database** | PostgreSQL 16+ (Neon runs 18.x) + `pgvector 0.8.6` | User Archive, HNSW Vector Embeddings |
+| **AI / LLM Service** | Google Gemini Flash (`gemini-3.5-flash`) & `gemini-embedding-001` | RAG Answer Generation & Vectorization |
 | **Testing** | Vitest 3.2, Supertest 7.2 | Unit and Integration Tests |
 
 ---
@@ -161,7 +161,7 @@ AMURoboclub-NSD-Hackathon/
 │   ├── models/                # Exported star_model.json artifact
 │   ├── routes/                # Express API routes
 │   ├── services/              # Business logic (Gemini, Star Classifier, ESI, NASA)
-│   ├── tests/                 # Vitest test suites (188 tests)
+│   ├── tests/                 # Vitest test suites (189 tests)
 │   ├── app.js                 # Express application configuration
 │   └── server.js              # HTTP server entry point (Port 8080)
 ├── frontend/                  # React Vite Single Page App
@@ -354,10 +354,10 @@ erDiagram
 
 ## Known Limitations
 
-- **Exoplanet Mass Regression Drift**: `MASS_RADIUS_FIT` regression in `exoplanet.js` predicts $2.07 M_\oplus$ for an Earth-radius planet ($1.0 R_\oplus$), which currently causes 1 failing assertion in `tests/exoplanet.test.js`.
-- **Star Classifier Taxonomy Gaps**: The 6-class dataset (`stars.csv`) lacks explicit **Giant** and **Subgiant** categories, causing real supergiants like Betelgeuse ($887 R_\odot$) to be classified as Hypergiants.
+- **Free-Tier Cold Starts**: On the free hosting tiers the API sleeps after 15 minutes idle and the database suspends after 5. The first request after a quiet period takes 30-60 seconds. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the keep-alive strategy.
+- **Gemini Free-Tier Quotas**: A free API key is capped at a few requests per minute and a few hundred per day, shared across Q&A, image description and corpus ingestion. Transient 429 and 503 responses are retried with backoff.
 - **NASA API Rate Limit**: Without a `NASA_API_KEY`, the server uses NASA's `DEMO_KEY` (10 requests/hour server-wide). Protected by in-memory single-flight caching.
-- **Frontend Bundle Size**: The main compiled JavaScript chunk (`dist/assets/index-JoUi6bHM.js`) is 638.54 kB, exceeding Vite's 500 kB chunk warning threshold.
+- **Single-Instance Cache**: The NASA response cache lives in process memory, so it is correct only while the API runs as one instance. Horizontal scaling would need a shared cache to stay within the upstream quota.
 
 ---
 
