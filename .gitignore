@@ -10,9 +10,9 @@ node_modules/
 dist/
 build/
 
-# Local editor/agent settings (shared config lives in .claude/commands and
-# .claude/launch.json, which are committed)
-.claude/settings.local.json
+# Local editor settings
+.vscode/
+.idea/
 
 # Python
 __pycache__/
