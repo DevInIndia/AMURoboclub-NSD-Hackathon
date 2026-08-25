@@ -1,0 +1,48 @@
+# Keeps the Render service warm during the hours anyone is likely to use it.
+#
+# The free instance sleeps after 15 minutes idle, and waking it is worse than
+# it sounds: the start command re-runs `db:migrate`, which connects to a Neon
+# project that has also scaled to zero. Two cold starts chain, and the first
+# request after a quiet period can take the better part of a minute.
+#
+# **The window is deliberate, not laziness.** Render grants 750 instance-hours
+# per workspace per month and a 31-day month is 744 hours, so pinging around
+# the clock would consume essentially the whole allowance, leave no room for a
+# second free service, and suspend the service until the next calendar month if
+# it tipped over. 04:00-16:00 UTC is 09:30-21:30 IST -- 13 hours a day, roughly
+# 400 hours a month, comfortably inside the budget and awake for any plausible
+# demo slot.
+#
+# **It pings `/` and nothing else.** That route returns the string "Working"
+# without touching Postgres, so this keeps Render awake while Neon stays scaled
+# to zero and its 100 CU-hours are spent only on real traffic. Pointing this at
+# an API route instead would wake the database every ten minutes and drain both
+# free tiers at once for no benefit.
+
+name: Keep the API awake
+
+on:
+  schedule:
+    - cron: "*/10 4-16 * * *"
+  # So the service can be warmed by hand a minute before a demo.
+  workflow_dispatch:
+
+# Never let two pings overlap; a queued run is pointless once a later one exists.
+concurrency:
+  group: keep-api-awake
+  cancel-in-progress: true
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Ping the health check
+        run: |
+          curl --fail --silent --show-error \
+               --retry 3 --retry-delay 30 --retry-all-errors \
+               --max-time 120 \
+               https://celestial-chatbot-api.onrender.com/
+          echo
+          echo "API responded."
