@@ -23,6 +23,7 @@ const Exoplanet = lazy(() => import("./pages/Exoplanet"));
 const Stargazing = lazy(() => import("./pages/Stargazing"));
 const History = lazy(() => import("./pages/History"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Privacy = lazy(() => import("./pages/Privacy"));
 
 const App = () => (
   <Suspense fallback={<LoadingScreen message="Loading" />}>
@@ -31,6 +32,7 @@ const App = () => (
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/stargazing" element={<Stargazing />} />
+      <Route path="/privacy" element={<Privacy />} />
       <Route
         path="/advance"
         element={
